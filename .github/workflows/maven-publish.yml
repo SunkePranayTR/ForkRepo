@@ -60,7 +60,7 @@ jobs:
 
         with:
 
-          name: testreport1
+          name:  ArtifatsOfForkRepoProject
 
           path: target/surefire-reports
 
