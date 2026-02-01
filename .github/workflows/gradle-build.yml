@@ -1,31 +1,43 @@
-# This workflow will build a Java project with Gradle, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
-
+name: Build, Test and Store - Part 2
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
-
+    branches: [ "main" ]
+  workflow_dispatch:
+  
 jobs:
-  build:
-
+  build-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17' ]
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v4
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+  
+      - name: Install Dependencies
+        uses: actions/setup-java@v5
         with:
-          java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: temurin
+          java-version: "17"
           cache: maven
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-      - name: Build with Gradle
-        run: ./gradlew build
+  
+      - name: show Versions
+        run:  |
+          java -versoin
+          ./mvnw -version
+  
+      - name: Build Package
+        run:  ./mvnw clean package
+  
+      - name: Test Project
+        run:  ./mvnw -B test
+  
+      - name: Upload Artifacts
+        if: always()
+        uses:  actions/checkout@v4
+        with: 
+          name:  Artifacts
+          path:  target/Surefire-reports
+  
+          
+    
