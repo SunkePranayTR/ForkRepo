@@ -23,7 +23,7 @@ jobs:
   
       - name: show Versions
         run:  |
-          java -versoin
+          java -version
           ./mvnw -version
   
       - name: Build Package
