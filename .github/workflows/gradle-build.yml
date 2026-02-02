@@ -10,9 +10,21 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
+    # steps:
+    #   - name: Checkout Source Code
+    #     uses: actions/checkout@v6
+    
     steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v6
+      - name: Checkout current repo (optional)
+        uses: actions/checkout@v4
+    
+      - name: Checkout OITWorkpapers_API-Origin-Service
+        uses: actions/checkout@v4
+        with:
+          repository: tr/OITWorkpapers_API-Origin-Service  # org/repo
+          ref: main                                        # or a tag/SHA
+          path: OITWorkpapers_API-Origin-Service           # folder name to place it in
+
   
       - name: Install Dependencies
         uses: actions/setup-java@v5
@@ -36,7 +48,7 @@ jobs:
         if: always()
         uses:  actions/checkout@v4
         with: 
-          name:  Artifacts
+          name:  API-Origin-Service Artifacts
           path:  target/Surefire-reports
   
           
