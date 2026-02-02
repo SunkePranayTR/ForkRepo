@@ -21,7 +21,7 @@ jobs:
       - name: Checkout OITWorkpapers_API-Origin-Service
         uses: actions/checkout@v4
         with:
-          repository: tr/OITWorkpapers_API-Origin-Service  # org/repo
+          repository: https://github.com/tr/OITWorkpapers_API-Origin-Service.git  # org/repo
           ref: main                                        # or a tag/SHA
           path: OITWorkpapers_API-Origin-Service           # folder name to place it in
 
