@@ -17,4 +17,3 @@ jobs:
 
       - name: Print test message
         run: echo "test msg"
-``
