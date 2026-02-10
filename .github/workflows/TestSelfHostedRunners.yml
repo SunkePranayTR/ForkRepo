@@ -1,0 +1,20 @@
+name: Testing the Self Hosted Runner
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    name: First Print
+    runs-on: [self-hosted, runner1]   # include 'self-hosted' + your custom label
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Print test message
+        run: echo "test msg"
+``
