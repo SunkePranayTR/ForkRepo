@@ -1,74 +1,56 @@
 name: CI - Build & Test (PetClinic)
 
-on: 
-
-  push: 
-
+on:
+  push:
     branches: ["main"]
-
   pull_request:
-
     branches: ["main"]
-
   workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-
   build-test:
+    # Ensure your self-hosted runner is registered with the label `runner1`
+    runs-on: [self-hosted, runner1]
 
-    runs-on: ubuntu-latest
- 
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
-      - name: checkout source code
-
-        uses: actions/checkout@v6
-
-      - name: setup java17
-
-        uses: actions/setup-java@v5
-
+      - name: Set up Java 17 (Temurin)
+        uses: actions/setup-java@v4
         with:
-
           distribution: temurin
-
           java-version: "17"
-
           cache: maven
 
-      - name: show versions
-
+      - name: Show versions
+        shell: pwsh
         run: |
+          java -version
+          .\mvnw.cmd -version
 
-            java -version
+      - name: Build
+        shell: pwsh
+        run: .\mvnw.cmd -B -U clean package
 
-            ./mvnw -version
- 
-      - name: build
+      - name: Run tests
+        shell: pwsh
+        run: .\mvnw.cmd -B test
 
-        run: ./mvnw clean package
-
-      - name: run test
-
-        run: ./mvnw -B test
- 
-      - name: upload artifacts
+      - name: Upload surefire reports (artifact 1)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name:  ArtifatsOfForkRepoProject
+          name: Artifacts-PetClinic-1
           path: target/surefire-reports
 
-
-      - name: Upload Artifacts2
+      - name: Upload surefire reports (artifact 2)
         if: always()
-        uses:  actions/upload-artifact@v4
-        with:       
-          name: Artifacts2
-          path:  target/surefire-reports
-
-
- 
+        uses: actions/upload-artifact@v4
+        with:
+          name: Artifacts-PetClinic-2
+          path: target/surefire-reports
