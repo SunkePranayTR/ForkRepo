@@ -1,0 +1,8 @@
+---
+- name: Connectivity test to Windows via WinRM (NTLM)
+  hosts: windows
+  gather_facts: no
+
+  tasks:
+    - name: Test WinRM connectivity with win_ping
+      ansible.windows.win_ping:
