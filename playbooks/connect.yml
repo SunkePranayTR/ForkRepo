@@ -2,7 +2,6 @@
 - name: Connect to Windows and confirm
   hosts: windows
   gather_facts: no
-
   tasks:
     - name: Ping Windows via WinRM
       ansible.windows.win_ping:
