@@ -1,0 +1,16 @@
+name: Run Ansible Playbook
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-playbook:
+    runs-on: Linux
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml
