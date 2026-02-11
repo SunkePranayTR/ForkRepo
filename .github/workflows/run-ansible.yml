@@ -23,16 +23,11 @@ jobs:
       - name: Run connect playbook (prints Connected successfully)
         env:
           PATH: ${{ github.workspace }}/.venv/bin:${{ env.PATH }}
-
-          # GitHub secrets (set these in repo → Settings → Secrets → Actions)
-          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
-          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
-
+          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}        # .\Ansible-User
+          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}# NewP@ssw0rd2026!
         run: |
           set -e
           . .venv/bin/activate
-
-          # ⬇⬇⬇ THIS is where the -e line is used ⬇⬇⬇
           ansible-playbook -i inventory/hosts.ini playbooks/connect.yml \
             -e "ansible_user=${WINDOWS_USER} \
                 ansible_password=${WINDOWS_PASSWORD} \
