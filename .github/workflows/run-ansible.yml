@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-playbook:
-    runs-on: self-hosted
+    runs-on: linux
 
     steps:
       - name: Checkout repository
