@@ -5,12 +5,49 @@ on:
 
 jobs:
   run-playbook:
-    runs-on: Linux
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Run Ansible Playbook
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create venv and install Ansible + WinRM deps
         run: |
-          ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install "ansible==8.7.0" "pywinrm>=0.4.3" "requests-ntlm>=1.2.0"
+          ansible --version
+
+      - name: Run Ansible Playbook
+        env:
+          PATH: ${{ github.workspace }}/.venv/bin:${{ env.PATH }}
+          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+        run: |
+          echo "🔧 Activating venv…"
+          source .venv/bin/activate
+
+          echo "✅ Python version:"
+          python --version
+
+          echo "✅ Ansible version:"
+          ansible --version
+
+          echo "📁 Current working directory: $PWD"
+          echo "📂 Repo files:"
+          ls -la
+
+          echo "🧭 Showing inventory file path and preview (credentials not printed):"
+          echo " - inventory/hosts.ini"
+          sed -n '1,120p' inventory/hosts.ini
+
+          echo "🧪 Running playbook: playbooks/win-ping.yml"
+          ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml -vv
+
+          echo "🎉 Playbook finished"
