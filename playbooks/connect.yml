@@ -1,0 +1,16 @@
+---
+- name: Connect to Windows and confirm
+  hosts: windows
+  gather_facts: no
+
+  tasks:
+    - name: Ping Windows via WinRM
+      ansible.windows.win_ping:
+
+    - name: Who am I on Windows?
+      ansible.windows.win_command: whoami
+      register: who
+
+    - name: Show identity
+      ansible.builtin.debug:
+        msg: "Connected successfully as: {{ who.stdout }}"
