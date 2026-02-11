@@ -5,6 +5,7 @@ on:
 
 jobs:
   run-playbook:
+    # IMPORTANT: run on your self-hosted EC2 runner
     runs-on: self-hosted
 
     steps:
@@ -14,13 +15,14 @@ jobs:
       # Use system Python on the self-hosted runner
       - name: Create venv and install Ansible + WinRM deps
         run: |
+          set -e
           echo "🔧 Using system Python:"
-          which python3 || true
+          command -v python3 || true
           python3 --version || true
 
           echo "📦 Creating virtual environment…"
           python3 -m venv .venv
-          source .venv/bin/activate
+          . .venv/bin/activate
 
           echo "⬆️ Upgrading pip in venv…"
           python -m pip install --upgrade pip
@@ -33,12 +35,16 @@ jobs:
 
       - name: Run Ansible Playbook
         env:
+          # Ensure the venv's bin dir is on PATH for this step
           PATH: ${{ github.workspace }}/.venv/bin:${{ env.PATH }}
+
+          # Inject GitHub Secrets as environment vars
           WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
           WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
         run: |
+          set -e
           echo "🔧 Activating venv…"
-          source .venv/bin/activate
+          . .venv/bin/activate
 
           echo "✅ Python version:"
           python --version
@@ -46,15 +52,14 @@ jobs:
           echo "✅ Ansible version:"
           ansible --version
 
-          echo "📁 Current working directory: $PWD"
-          echo "📂 Repo files:"
-          ls -la
+          echo "📂 Repo files (Python-only listing for portability):"
+          python -c "import os, json; print(json.dumps(sorted(os.listdir('.')), indent=2))"
 
-          echo "🧭 Showing inventory file path and preview (credentials not printed):"
-          echo " - inventory/hosts.ini"
-          sed -n '1,120p' inventory/hosts.ini
+          echo "🧭 inventory/hosts.ini preview (no secrets):"
+          python -c "import pathlib; p=pathlib.Path('inventory/hosts.ini'); print(p.read_text() if p.exists() else 'inventory/hosts.ini not found')"
 
-          echo "🧪 Running playbook: playbooks/win-ping.yml"
-          ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml -vv
+          echo '🧪 Running playbook: playbooks/win-ping.yml'
+          ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml \
+            -e "ansible_user=$WINDOWS_USER ansible_password=$WINDOWS_PASSWORD ansible_connection=winrm ansible_winrm_transport=ntlm ansible_port=5985 ansible_winrm_server_cert_validation=ignore" -vv
 
           echo "🎉 Playbook finished"
