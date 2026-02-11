@@ -6,7 +6,6 @@ on:
 jobs:
   connect:
     runs-on: self-hosted
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -23,17 +22,19 @@ jobs:
       - name: Run connect playbook (prints Connected successfully)
         env:
           PATH: ${{ github.workspace }}/.venv/bin:${{ env.PATH }}
-          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}        # .\Ansible-User
-          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}# NewP@ssw0rd2026!
+          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
         run: |
           set -e
           . .venv/bin/activate
+          echo "Effective username: ${WINDOWS_USER}"
           ansible-playbook -i inventory/hosts.ini playbooks/connect.yml \
             -e "ansible_user=${WINDOWS_USER} \
                 ansible_password=${WINDOWS_PASSWORD} \
                 ansible_connection=winrm \
                 ansible_winrm_transport=ntlm \
                 ansible_port=5985 \
+                ansible_winrm_scheme=http \
                 ansible_winrm_server_cert_validation=ignore \
                 ansible_winrm_operation_timeout_sec=60 \
                 ansible_winrm_read_timeout_sec=120" -vvv
