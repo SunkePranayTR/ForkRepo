@@ -5,23 +5,30 @@ on:
 
 jobs:
   run-playbook:
-    runs-on: linux
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
+      # Use system Python on the self-hosted runner
       - name: Create venv and install Ansible + WinRM deps
         run: |
-          python -m venv .venv
+          echo "🔧 Using system Python:"
+          which python3 || true
+          python3 --version || true
+
+          echo "📦 Creating virtual environment…"
+          python3 -m venv .venv
           source .venv/bin/activate
-          pip install --upgrade pip
-          pip install "ansible==8.7.0" "pywinrm>=0.4.3" "requests-ntlm>=1.2.0"
+
+          echo "⬆️ Upgrading pip in venv…"
+          python -m pip install --upgrade pip
+
+          echo "📥 Installing Ansible and WinRM deps in venv…"
+          python -m pip install "ansible==8.7.0" "pywinrm>=0.4.3" "requests-ntlm>=1.2.0"
+
+          echo "ℹ️ Ansible version (from venv):"
           ansible --version
 
       - name: Run Ansible Playbook
