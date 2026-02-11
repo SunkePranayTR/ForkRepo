@@ -1,55 +1,32 @@
-name: Run Ansible Playbook
+name: Basic Windows Connect
 
 on:
   workflow_dispatch:
 
 jobs:
-  run-playbook:
-    # IMPORTANT: run on your self-hosted EC2 runner
+  connect:
     runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Use system Python on the self-hosted runner
-      - name: Create venv and install Ansible + WinRM deps
+      - name: Create venv and install Ansible (WinRM)
         run: |
           set -e
-          echo "🔧 Using system Python:"
-          command -v python3 || true
-          python3 --version || true
-
-          echo "📦 Creating virtual environment…"
           python3 -m venv .venv
           . .venv/bin/activate
-
-          echo "⬆️ Upgrading pip in venv…"
           python -m pip install --upgrade pip
-
-          echo "📥 Installing Ansible and WinRM deps in venv…"
           python -m pip install "ansible==8.7.0" "pywinrm>=0.4.3" "requests-ntlm>=1.2.0"
-
-          echo "ℹ️ Ansible version (from venv):"
           ansible --version
 
-      - name: Run Ansible Playbook
+      - name: Run connect playbook (prints Connected successfully)
         env:
           PATH: ${{ github.workspace }}/.venv/bin:${{ env.PATH }}
           WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
           WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
         run: |
           set -e
-          echo "🔧 Activating venv…"
           . .venv/bin/activate
-
-          echo "✅ Python version:"
-          python --version
-
-          echo "✅ Ansible version:"
-          ansible --version
-
-          echo '🧪 Running playbook with local account via NTLM'
-          ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml \
-            -e "ansible_user=.\$WINDOWS_USER ansible_password=$WINDOWS_PASSWORD ansible_connection=winrm ansible_winrm_transport=ntlm ansible_port=5985 ansible_winrm_server_cert_validation=ignore" -vv
-          echo "🎉 Playbook finished"
+          ansible-playbook -i inventory/hosts.ini playbooks/connect.yml \
+            -e "ansible_user=$WINDOWS_USER ansible_password=$WINDOWS_PASSWORD ansible_connection=winrm ansible_winrm_transport=ntlm ansible_port=5985 ansible_winrm_server_cert_validation=ignore" -vv
