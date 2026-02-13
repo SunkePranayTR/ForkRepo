@@ -22,7 +22,7 @@ jobs:
       - name: Run connect playbook (prints Connected successfully)
         env:
           PATH: ${{ github.workspace }}/.venv/bin:${{ env.PATH }}
-          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+          WINDOWS_USER: '.\\Pranay'
           WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
         run: |
           set -e
