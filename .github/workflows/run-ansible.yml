@@ -28,7 +28,7 @@ jobs:
           set -e
           . .venv/bin/activate
           echo "Effective username: ${WINDOWS_USER}"
-          ansible-playbook -i inventory/hosts.ini playbooks/connect.yml \
+          ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml \
             -e "ansible_user=${WINDOWS_USER} \
                 ansible_password=${WINDOWS_PASSWORD} \
                 ansible_connection=winrm \
