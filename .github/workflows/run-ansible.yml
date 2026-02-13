@@ -23,7 +23,7 @@ jobs:
         env:
           PATH: ${{ github.workspace }}/.venv/bin:${{ env.PATH }}
           WINDOWS_USER: '.\\Pranay'
-          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+          WINDOWS_PASSWORD: "ThomsonReuters@1711"
         run: |
           set -e
           . .venv/bin/activate
