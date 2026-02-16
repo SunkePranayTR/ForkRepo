@@ -1,58 +1,37 @@
 name: Download Artifact from JFrog
-
+ 
 on:
   workflow_dispatch:
-
+ 
 jobs:
   download:
-    runs-on: windows
-
+    runs-on: self-hosted
+ 
     steps:
-      # 1) Checkout repo (not strictly needed for this download, but harmless)
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2) Create a working folder for the artifact and extraction
-      - name: Create artifact folders
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force -Path 'C:\artifact1' | Out-Null
-          New-Item -ItemType Directory -Force -Path 'C:\artifact1\unzipped' | Out-Null
-          # Using C:\artifact1 for zip and C:\artifact1\unzipped for extraction for clarity
-
-      # 3) Download from JFrog using Basic Auth from GitHub Secrets
-      - name: Download artifact from JFrog with authentication
-        shell: pwsh
-        env:
-          JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
-          JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-          ARTIFACT_URL: https://tr1.jfrog.io/artifactory/generic-local/CTT/GST/gosystemapicore/develop/2024.05.22.22.zip
-        run: |
-          # Ensure TLS 1.2 is used by PowerShell's web cmdlets
-          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-          # Build Basic auth header
-          $pair = "$env:JFROG_USERNAME:$env:JFROG_PASSWORD"   # no need to escape the colon
-          $encoded = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair))
-          $headers = @{ Authorization = "Basic $encoded" }
-
-          # Download the file
-          $outFile = 'C:\artifact1\app.zip'
-          Invoke-WebRequest -Uri $env:ARTIFACT_URL -Headers $headers -OutFile $outFile -UseBasicParsing
-
-          # Validate the download
-          if (-not (Test-Path $outFile)) {
-            Write-Error "Download failed: $outFile not found."
-          }
-
-      # 4) Extract the ZIP into the unzipped folder
-      - name: Extract artifact
-        shell: pwsh
-        run: |
-          Expand-Archive -Path 'C:\artifact1\app.zip' -DestinationPath 'C:\artifact1\unzipped' -Force
-
-      # 5) Show extracted files (top-level)
-      - name: Show extracted files
-        shell: pwsh
-        run: |
-          Get-ChildItem -Recurse 'C:\artifact1\unzipped' | Select-Object FullName, Length, LastWriteTime | Format-Table -AutoSize
+ 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+ 
+    - name: Create artifact folder
+      run: mkdir C:\artifact1
+ 
+    - name: Download artifact from JFrog with authentication
+      run: |
+        $username = "${{ secrets.JFROG_USERNAME }}"
+        $password = "${{ secrets.JFROG_PASSWORD }}"
+        $pair = "$username`:$password"
+        $encoded = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair))
+        $headers = @{ Authorization = "Basic $encoded" }
+     
+        Invoke-WebRequest `
+          -Uri "https://tr1.jfrog.io/artifactory/generic-local/CTT/GST/gosystemapicore/develop/2024.05.22.22.zip" `
+          -Headers $headers `
+          -OutFile "C:\artifact1\app.zip"
+   
+    - name: Extract artifact
+      run: |
+        Expand-Archive -Path "C:\artifact1/app.zip" -DestinationPath "C:\artifact1"
+ 
+    - name: Show extracted files
+      run: dir C:\artifact1
+ 
