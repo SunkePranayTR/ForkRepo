@@ -13,7 +13,7 @@ jobs:
       uses: actions/checkout@v4
  
     - name: Create artifact folder
-      run: mkdir C:\artifact
+      run: mkdir C:\artifact1
  
     - name: Download artifact from JFrog with authentication
       run: |
@@ -26,12 +26,12 @@ jobs:
         Invoke-WebRequest `
           -Uri "https://tr1.jfrog.io/artifactory/generic-local/CTT/GST/gosystemapicore/develop/2024.05.22.22.zip" `
           -Headers $headers `
-          -OutFile "C:\artifact\app.zip"
+          -OutFile "C:\artifact1\app.zip"
    
     - name: Extract artifact
       run: |
-        Expand-Archive -Path "C:\artifact/app.zip" -DestinationPath "C:\artifact"
+        Expand-Archive -Path "C:\artifact1/app.zip" -DestinationPath "C:\artifact"
  
     - name: Show extracted files
-      run: dir C:\artifact
+      run: dir C:\artifact1
  
