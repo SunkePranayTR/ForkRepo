@@ -5,7 +5,7 @@ on:
 
 jobs:
   download:
-    runs-on: windows-latest   # Use a valid Windows image label
+    runs-on: windows
 
     steps:
       # 1) Checkout repo (not strictly needed for this download, but harmless)
