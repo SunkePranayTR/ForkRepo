@@ -1,0 +1,37 @@
+name: Download Artifact from JFrog
+ 
+on:
+  workflow_dispatch:
+ 
+jobs:
+  download:
+    runs-on: self-hosted
+ 
+    steps:
+ 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+ 
+    - name: Create artifact folder
+      run: mkdir C:\artifact
+ 
+    - name: Download artifact from JFrog with authentication
+      run: |
+        $username = "${{ secrets.JFROG_USERNAME }}"
+        $password = "${{ secrets.JFROG_PASSWORD }}"
+        $pair = "$username`:$password"
+        $encoded = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($pair))
+        $headers = @{ Authorization = "Basic $encoded" }
+     
+        Invoke-WebRequest `
+          -Uri "https://tr1.jfrog.io/artifactory/generic-local/CTT/GST/gosystemapicore/develop/2024.05.22.22.zip" `
+          -Headers $headers `
+          -OutFile "C:\artifact\app.zip"
+   
+    - name: Extract artifact
+      run: |
+        Expand-Archive -Path "C:\artifact/app.zip" -DestinationPath "C:\artifact"
+ 
+    - name: Show extracted files
+      run: dir C:\artifact
+ 
