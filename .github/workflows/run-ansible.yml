@@ -6,23 +6,82 @@ on:
 jobs:
   connect:
     runs-on: self-hosted
+
+    # You asked to keep username/password here for now.
+    # Replace the values below with your actual target credentials.
+    env:
+      WINDOWS_USER: "Pranay"
+      WINDOWS_PASSWORD: "ThomsonReuters@1711"
+
+      # Update this to your Windows host IP/DNS
+      WINDOWS_HOST: "10.21.1.87"
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout repository (optional)
+        uses: actions/checkout@v4
+
+      - name: Install Ansible on Linux runner
+        if: runner.os == 'Linux'
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install 'ansible>=9' 'pywinrm>=0.4.3' 'requests-ntlm'
+
+      - name: Install Ansible on Windows runner
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          py -m pip install --upgrade pip
+          py -m pip install ansible pywinrm requests-ntlm
+
+      - name: Generate inventory and playbook files
+        shell: bash
+        run: |
+          mkdir -p inventory playbooks
+
+          # Create inventory/hosts.ini
+          cat > inventory/hosts.ini <<'INI'
+          [windows]
+          winhost1 ansible_host=${WINDOWS_HOST}
+          INI
+          # Expand env var in-place (portable way)
+          sed -i "s|\${WINDOWS_HOST}|${WINDOWS_HOST}|g" inventory/hosts.ini
+
+          # Create playbooks/win-ping.yml
+          cat > playbooks/win-ping.yml <<'YAML'
+          ---
+          - name: Test WinRM connectivity and print a message
+            hosts: windows
+            gather_facts: no
+            tasks:
+              - name: Test WinRM connectivity
+                ansible.windows.win_ping:
+
+              - name: Print Connected successfully
+                ansible.builtin.debug:
+                  msg: "Connected successfully"
+          YAML
+
+      - name: Show inventory (sanity check)
+        shell: bash
+        run: |
+          echo "=== inventory/hosts.ini ==="
+          cat inventory/hosts.ini
+          echo "==========================="
 
       - name: Run connect playbook (prints Connected successfully)
+        shell: bash
         env:
-          WINDOWS_USER: "Administrator"
-          WINDOWS_PASSWORD: "YourNewPassword@123"
+          ANSIBLE_FORCE_COLOR: "true"
         run: |
-          echo "Effective username: ${WINDOWS_USER}"
+          ansible --version
+          # Avoid -vvv because it can leak sensitive info in logs
           ansible-playbook -i inventory/hosts.ini playbooks/win-ping.yml \
-            -e "ansible_user=${WINDOWS_USER} \
-                ansible_password=${WINDOWS_PASSWORD} \
-                ansible_connection=winrm \
-                ansible_winrm_transport=ntlm \
-                ansible_port=5985 \
-                ansible_winrm_scheme=http \
-                ansible_winrm_server_cert_validation=ignore \
-                ansible_winrm_operation_timeout_sec=60 \
-                ansible_winrm_read_timeout_sec=120" -vvv
+            -e ansible_user="${WINDOWS_USER}" \
+            -e ansible_password="${WINDOWS_PASSWORD}" \
+            -e ansible_connection=winrm \
+            -e ansible_winrm_transport=ntlm \
+            -e ansible_port=5985 \
+            -e ansible_winrm_scheme=http \
+            -e ansible_winrm_server_cert_validation=ignore \
+            -e ansible_winrm_operation_timeout_sec=60 \
+            -e ansible_winrm_read_timeout_sec=120
