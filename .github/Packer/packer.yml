@@ -2,8 +2,9 @@ name: Packer Full flow
 
 on: 
   push:
-    branches:
-      main:
+    # branches:
+    #   main:
+  workflow_dispatch:
 
 jobs:
   runs-on: winRunner1
