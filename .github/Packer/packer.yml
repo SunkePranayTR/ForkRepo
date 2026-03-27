@@ -1,0 +1,15 @@
+name: Packer Full flow
+
+on: 
+  push:
+    branches:
+      main:
+
+jobs:
+  runs-on: winRunner1
+  
+  steps:
+
+    name: test flow
+    uses: actions/checkout@v2
+      
