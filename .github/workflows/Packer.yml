@@ -13,7 +13,11 @@ jobs:
 
     steps:
       - name: Install Packer
-        shell: powershell
+        shell: pwsh
         run: |
-          choco install packer -y
+          $version = "1.15.0"
+          $url = "https://releases.hashicorp.com/packer/$version/packer_${version}_windows_amd64.zip"
+          Invoke-WebRequest -Uri $url -OutFile "$env:TEMP\packer.zip"
+          Expand-Archive -Path "$env:TEMP\packer.zip" -DestinationPath "C:\packer" -Force
+          $env:PATH += ";C:\packer"
           packer --version
