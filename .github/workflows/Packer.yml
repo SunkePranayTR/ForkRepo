@@ -20,4 +20,22 @@ jobs:
           Invoke-WebRequest -Uri $url -OutFile "$env:TEMP\packer.zip"
           Expand-Archive -Path "$env:TEMP\packer.zip" -DestinationPath "C:\packer" -Force
           $env:PATH += ";C:\packer"
-          packer --version
+          packer --version 
+
+          
+      - name: Cloud-tool install
+        shell: pwsh
+        run: |
+          pip install cloud-tool `
+          --extra-index-url https://tr1.jfrog.io/tr1/api/pypi/pypi/simple `
+          --extra-index-url https://${{ secrets.JFROG_USERNAME }}:${{ secrets.JFROG_API_KEY }}@tr1.jfrog.io/tr1/api/pypi/pypi-local/simple
+    
+    
+      - name: Cloud-tool version checking
+        run: cloud-tool --version
+
+
+
+
+
+      
