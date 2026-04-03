@@ -35,6 +35,12 @@ jobs:
         run: cloud-tool --version
 
 
+      - name: Configure Cloud-tool
+        run: cloud-tool configure
+       
+            
+
+
 
 
 
