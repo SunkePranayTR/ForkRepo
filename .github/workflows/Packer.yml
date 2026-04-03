@@ -23,13 +23,13 @@ jobs:
           packer --version 
 
           
-      - name: Cloud-tool install
+      - name: Cloud-Tool Install
         shell: pwsh
         run: |
-          pip install cloud-tool `
-          --extra-index-url https://tr1.jfrog.io/tr1/api/pypi/pypi/simple `
-          --extra-index-url https://${{ secrets.JFROG_USERNAME }}:${{ secrets.JFROG_API_KEY }}@tr1.jfrog.io/tr1/api/pypi/pypi-local/simple
-    
+          pip install cloud-tool --no-input `
+            --extra-index-url https://tr1.jfrog.io/tr1/api/pypi/pypi/simple `
+            --extra-index-url https://${{ secrets.JFROG_USERNAME }}:${{ secrets.JFROG_API_KEY }}@tr1.jfrog.io/tr1/api/pypi/pypi-local/simple
+
     
       - name: Cloud-tool version checking
         run: cloud-tool --version
