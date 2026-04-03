@@ -36,7 +36,17 @@ jobs:
 
 
       - name: Configure Cloud-tool
-        run: cloud-tool configure
+        run: | 
+          @"
+            ${{ secrets.REGION }}
+            ${{ secrets.AWS_PROFILE }}
+            ${{ secrets.USERNAME }}
+            "@ | cloud-tool configure
+
+
+      - name: Cloud-tool configured
+        run: Write-Host "Done"
+        
        
             
 
