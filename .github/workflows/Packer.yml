@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Install Packer
-        shell: pwsh
+        shell: powershell
         run: |
           choco install packer -y
           packer --version
