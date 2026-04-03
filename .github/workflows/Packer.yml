@@ -44,7 +44,11 @@ jobs:
             ${{ secrets.USERNAME }}
           "@ | cloud-tool configure
 
-
+      - name: Cloud-Tool login
+        run: |
+          @"
+            ${{ secrets.MGMT_PWD }}
+          "@ | cloud-tool login
 
       - name: Cloud-tool configured
         run: Write-Host "Done"
