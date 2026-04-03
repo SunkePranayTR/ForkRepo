@@ -1,0 +1,17 @@
+name: Test to install Packer
+
+on:
+  push:
+    branches: 
+      - Packer
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs_on: winrunner1
+
+    steps:
+      - name: Test the app
+        shell: pwsh
+        run: Write-Host "Hello World"
