@@ -12,6 +12,8 @@ jobs:
     runs-on: winrunner1
 
     steps:
-      - name: Test the app
+      - name: Install Packer
         shell: pwsh
-        run: Write-Host "Hello World"
+        run: |
+          choco install packer -y
+          packer --version
