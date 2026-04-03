@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs_on: winrunner1
+    runs-on: winrunner1
 
     steps:
       - name: Test the app
