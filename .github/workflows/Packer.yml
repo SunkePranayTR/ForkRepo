@@ -1,8 +1,65 @@
+# name: Test to install Packer
+
+# on:
+#   push:
+#     branches: 
+#       - Packer
+#       - main
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: windows-latest
+
+#     steps:
+#       - name: Install Packer
+#         shell: pwsh
+#         run: |
+#           $version = "1.15.0"
+#           $url = "https://releases.hashicorp.com/packer/$version/packer_${version}_windows_amd64.zip"
+#           Invoke-WebRequest -Uri $url -OutFile "$env:TEMP\packer.zip"
+#           Expand-Archive -Path "$env:TEMP\packer.zip" -DestinationPath "C:\packer" -Force
+#           $env:PATH += ";C:\packer"
+#           packer --version 
+
+          
+#       - name: Cloud-Tool Install
+#         shell: pwsh
+#         run: |
+#           pip install cloud-tool --no-input `
+#             --extra-index-url https://tr1.jfrog.io/tr1/api/pypi/pypi/simple `
+#             --extra-index-url https://${{ secrets.JFROG_USERNAME }}:${{ secrets.JFROG_API_KEY }}@tr1.jfrog.io/tr1/api/pypi/pypi-local/simple
+
+    
+#       - name: Cloud-tool version checking
+#         run: cloud-tool --version
+
+
+#       - name: Configure Cloud-tool
+#         shell: pwsh
+#         run: |
+#           @"
+#             ${{ secrets.REGION }}
+#             ${{ secrets.AWS_PROFILE }}
+#             ${{ secrets.USERNAME }}
+#           "@ | cloud-tool configure
+
+#       - name: Cloud-Tool login
+#         run: |
+#           @"
+#             ${{ secrets.MGMT_PWD }}
+#           "@ | cloud-tool login
+
+#       - name: Cloud-tool configured
+#         run: Write-Host "Done"
+        
+       
+            
 name: Test to install Packer
 
 on:
   push:
-    branches: 
+    branches:
       - Packer
       - main
   workflow_dispatch:
@@ -19,10 +76,9 @@ jobs:
           $url = "https://releases.hashicorp.com/packer/$version/packer_${version}_windows_amd64.zip"
           Invoke-WebRequest -Uri $url -OutFile "$env:TEMP\packer.zip"
           Expand-Archive -Path "$env:TEMP\packer.zip" -DestinationPath "C:\packer" -Force
-          $env:PATH += ";C:\packer"
-          packer --version 
+          echo "C:\packer" >> $env:GITHUB_PATH
+          packer --version
 
-          
       - name: Cloud-Tool Install
         shell: pwsh
         run: |
@@ -30,31 +86,29 @@ jobs:
             --extra-index-url https://tr1.jfrog.io/tr1/api/pypi/pypi/simple `
             --extra-index-url https://${{ secrets.JFROG_USERNAME }}:${{ secrets.JFROG_API_KEY }}@tr1.jfrog.io/tr1/api/pypi/pypi-local/simple
 
-    
       - name: Cloud-tool version checking
+        shell: pwsh
         run: cloud-tool --version
-
 
       - name: Configure Cloud-tool
         shell: pwsh
         run: |
           @"
-            ${{ secrets.REGION }}
-            ${{ secrets.AWS_PROFILE }}
-            ${{ secrets.USERNAME }}
-          "@ | cloud-tool configure
+          ${{ secrets.REGION }}
+          ${{ secrets.AWS_PROFILE }}
+          ${{ secrets.USERNAME }}
+"@ | cloud-tool configure
 
       - name: Cloud-Tool login
+        shell: pwsh
         run: |
           @"
-            ${{ secrets.MGMT_PWD }}
-          "@ | cloud-tool login
+          ${{ secrets.MGMT_PWD }}
+"@ | cloud-tool login
 
-      - name: Cloud-tool configured
-        run: Write-Host "Done"
-        
-       
-            
+      - name: Done
+        shell: pwsh
+        run: Write-Host "Cloud-tool configured and logged in successfully"
 
 
 
