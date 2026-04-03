@@ -97,14 +97,14 @@ jobs:
           ${{ secrets.REGION }}
           ${{ secrets.AWS_PROFILE }}
           ${{ secrets.USERNAME }}
-"@ | cloud-tool configure
+          "@ | cloud-tool configure
 
       - name: Cloud-Tool login
         shell: pwsh
         run: |
           @"
           ${{ secrets.MGMT_PWD }}
-"@ | cloud-tool login
+          "@ | cloud-tool login
 
       - name: Done
         shell: pwsh
