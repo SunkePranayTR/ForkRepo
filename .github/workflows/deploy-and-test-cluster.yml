@@ -2,9 +2,9 @@ name: Deploy and Test Cluster
 
 on:
   push:
-    branches:
-      - main
-      - Packer
+    # branches:
+    #   - main
+    #   - Packer
   workflow_dispatch:
 
 jobs:
