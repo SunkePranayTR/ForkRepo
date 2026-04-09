@@ -1,6 +1,10 @@
 name: OIDC Authentication Test
 
 on:
+  push:
+    branches:
+      - main
+      
   workflow_dispatch:
 
 permissions:
