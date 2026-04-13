@@ -7,11 +7,25 @@ on:
       - main
   workflow_dispatch:
 
+  
+env:
+  GITHUB_TOKEN: ${{ secrets.A201814_ATPA_GST_DEVOPS_DEVELOPERS_TAAP_GST_GITHUB_SERVICE_PAT }}
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
+
+      - name: Downloading Custom actions
+        uses: actions/checkout@v4
+        with:
+          repository: tr/ctt-sre_common-github-customactions
+          ref: master
+          token: ${{ env.GITHUB_TOKEN }}
+          path: .github/external
+
+        
       - name: Install Packer
         shell: pwsh
         run: |
