@@ -24,8 +24,8 @@ jobs:
         run: python3 -m pip install --user ansible
 
 
-      - name: Ansible version
-        run: ansible --verison
+      - name: Display Ansible version
+        run: ansible --version
 
 
       - name: Checkout repo
