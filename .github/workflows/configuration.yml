@@ -21,7 +21,7 @@ jobs:
           echo "Hello world"
 
       - name: install Ansible
-        run: python2 -m pip install --user ansible
+        run: python3 -m pip install --user ansible
         
 
           
