@@ -15,7 +15,6 @@ jobs:
     runs-on: ansible-1
 
     steps:
-
       - name: Test print 
         run: |
           echo "Hello world"
@@ -23,13 +22,16 @@ jobs:
       - name: install Ansible
         run: python3 -m pip install --user ansible
 
-
       - name: Display Ansible version
         run: ansible --version
 
-
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Check connectivity
+        run: |
+          nc -zv 10.21.10.160 5986
+          nc -zv 10.21.10.93 5986
 
 
       - name: Display contents
