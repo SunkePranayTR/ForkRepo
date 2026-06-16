@@ -28,6 +28,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: install Network Connectivity module
+        run: sudo dnf install -y nmap-ncat
+
       - name: Check connectivity
         run: |
           nc -zv 10.21.10.160 5986
