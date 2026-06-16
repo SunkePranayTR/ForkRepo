@@ -1,0 +1,15 @@
+name: Configuration using Ansible
+
+on: 
+  # push:
+  #   branches:
+  #     - ansible-16062026
+
+
+  workflow_dispatch:
+
+
+
+jobs:
+  test:
+    
