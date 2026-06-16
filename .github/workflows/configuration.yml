@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    runs-on: ansible-runner
+    runs-on: ansible1
 
       steps:
 
