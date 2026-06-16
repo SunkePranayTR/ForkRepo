@@ -1,9 +1,9 @@
 name: Configuration using Ansible
 
 on: 
-  push:
-    branches:
-      - ansible-16062026
+#   push:
+#     branches:
+#       - ansible-16062026
 
 
   workflow_dispatch:
@@ -19,6 +19,10 @@ jobs:
       - name: Test print 
         run: |
           echo "Hello world"
+
+      - name: install Ansible
+        run: python2 -m pip install --user ansible
+        
 
           
     
