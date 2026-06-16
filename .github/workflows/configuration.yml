@@ -1,9 +1,9 @@
 name: Configuration using Ansible
 
 on: 
-  # push:
-  #   branches:
-  #     - ansible-16062026
+  push:
+    branches:
+      - ansible-16062026
 
 
   workflow_dispatch:
@@ -12,4 +12,13 @@ on:
 
 jobs:
   test:
+    runs-on: ansible-runner
+
+      steps:
+
+        - name: Test print 
+          run: |
+            echo "Hello world"
+
+          
     
