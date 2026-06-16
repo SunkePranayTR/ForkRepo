@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - ansible-16062026
-
-
   workflow_dispatch:
 
-
-
+  
 jobs:
   test:
     runs-on: ansible-1
@@ -20,7 +17,9 @@ jobs:
           echo "Hello world"
 
       - name: install Ansible
-        run: python3 -m pip install --user ansible
+        run: |
+          python3 -m pip install --user ansible pywinrm
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Display Ansible version
         run: ansible --version
