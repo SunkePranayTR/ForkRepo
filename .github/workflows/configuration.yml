@@ -24,7 +24,6 @@ jobs:
       - name: Display Ansible version
         run: |
           ansible --version
-          pywinrm --version
 
       - name: Checkout repo
         uses: actions/checkout@v4
