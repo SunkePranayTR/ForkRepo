@@ -14,11 +14,11 @@ jobs:
   test:
     runs-on: ansible1
 
-      steps:
+    steps:
 
-        - name: Test print 
-          run: |
-            echo "Hello world"
+      - name: Test print 
+        run: |
+          echo "Hello world"
 
           
     
