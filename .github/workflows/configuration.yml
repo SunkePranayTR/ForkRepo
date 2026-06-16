@@ -32,7 +32,10 @@ jobs:
       #   run: sudo dnf install -y nmap-ncat
 
       - name: Check connectivity
-        run: curl -kv https://10.21.10.160:5986
+        run: |
+          curl -kv https://10.21.10.160:5986
+          curl -kv https://10.21.10.93:5986
+        
           # nc -zv 10.21.10.160 5986
           # nc -zv 10.21.10.93 5986
 
