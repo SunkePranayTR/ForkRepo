@@ -42,9 +42,18 @@ jobs:
           # nc -zv 10.21.10.160 5986
           # nc -zv 10.21.10.93 5986
 
+      - name: Install Windows collection
+        run: ansible-galaxy collection install ansible.windows
 
-      - name: Display contents
-        run: ls
+      - name: Run win_ping playbook
+        env:
+          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+        run: |
+          cd ansible
+          ansible-playbook -i inventory/hosts.ini Playbooks/win_ping.yml
+
+
 
         
         
