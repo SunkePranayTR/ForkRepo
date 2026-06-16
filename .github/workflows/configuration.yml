@@ -25,6 +25,9 @@ jobs:
         run: |
           ansible --version
 
+      - name: check the ssh id
+        run: which ssh-copy-id
+
       - name: Checkout repo
         uses: actions/checkout@v4
 
