@@ -7,5 +7,5 @@ ansible_port: 5986
 ansible_winrm_transport: ntlm
 ansible_winrm_server_cert_validation: ignore
 
-export WINDOWS_USER='ansible'
-export WINDOWS_PASSWORD='ThomsonReuters@1711'
+export WINDOWS_USER: 'ansible'
+export WINDOWS_PASSWORD: 'ThomsonReuters@1711'
