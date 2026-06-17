@@ -78,7 +78,7 @@
 
     - name: Start postgresql server
       ansible.builtin.service:
-        name: postgresql15-server
+        name: postgresql
         state: started
         enabled: true
 
