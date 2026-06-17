@@ -48,7 +48,7 @@
         
 
           
-    
+---  
 - name: Linux nodes - connectivity + PostgreSQL
   hosts: linux
   gather_facts: true
