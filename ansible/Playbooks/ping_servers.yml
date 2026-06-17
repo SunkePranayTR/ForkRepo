@@ -78,13 +78,14 @@
     - name: check connectivity
       ansible.builtin.ping:
 
-    - name: install postgresql
+    - name: install postgresql server
       ansible.builtin.dnf:
         name: postgresql15-server
         state: present
 
-    - name: postgresql version
+    - name: Start postgresql server
       ansible.builtin.service:
         name: postgresql15-server
         state: started
+        enabled: true
 
