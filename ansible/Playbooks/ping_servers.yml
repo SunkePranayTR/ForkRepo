@@ -56,15 +56,15 @@
   gather_facts: false
   tasks:
     - name: Ping windows
-      ansible.builtin.win_ping:
+      ansible.Windows.win_ping:
 
     - name: install postgresql
-      ansible.builtin.win_winrm:
-        name: postgresql
+      ansible.windows.win_package:
+        name: postgresql15-server
         state: present
 
     - name: start postgresql service
-      ansible.builtin.service:
+      ansible.windows.win_service:
         name: postgresql15-server
         state: started
 
