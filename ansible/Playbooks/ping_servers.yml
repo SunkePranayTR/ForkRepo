@@ -56,7 +56,7 @@
   gather_facts: false
   tasks:
     - name: Ping windows
-      ansible.Windows.win_ping:
+      ansible.windows.win_ping:
 
     - name: install postgresql
       ansible.windows.win_package:
