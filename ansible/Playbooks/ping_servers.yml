@@ -16,7 +16,7 @@
       ansible.builtin.ping:
 
     - name: install postgresql
-      ansible.builtin.dnf:
+      ansible.builtin.yum:
         name: postgresql
         state: present
 
