@@ -6,6 +6,16 @@
     - name: Ping Windows hosts over WinRM
       ansible.windows.win_ping:
 
+    - name: install postgresql
+      ansible.builtin.service:
+        name: postgresql
+        state: present
+
+    - name: Start postgresql service
+      ansible.builtin.service:
+        name: postgresql
+        state: started
+
 - name: test connectivity for linux nodes 
   hosts: linux
   gather_facts: true
