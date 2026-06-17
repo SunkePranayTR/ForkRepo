@@ -1,6 +1,11 @@
+
+
 ansible_connection: winrm
 ansible_user: "{{ lookup('env', 'WINDOWS_USER') }}"
 ansible_password: "{{ lookup('env', 'WINDOWS_PASSWORD') }}"
 ansible_port: 5986
 ansible_winrm_transport: ntlm
 ansible_winrm_server_cert_validation: ignore
+
+export WINDOWS_USER=ansible
+export WINDOWS_PASSWORD='ThomsonReuters@1711'
