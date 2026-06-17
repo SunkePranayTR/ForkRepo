@@ -16,7 +16,7 @@ jobs:
         run: python3 -m pip install ansible
 
       - name: Display Ansible Version
-        run: ansible --Version
+        run: ansible --version
 
       - name: call playbook
         env:
