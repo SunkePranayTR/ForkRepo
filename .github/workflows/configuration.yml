@@ -12,6 +12,10 @@ jobs:
     runs-on: ansible-1
 
     steps:
+
+      - name: checkout repo
+        uses: actions/checkout@v4
+
       - name: Install ansible
         run: python3 -m pip install ansible
 
@@ -20,10 +24,10 @@ jobs:
 
       - name: call playbook
         env:
-          WINDOWS_USER = ${{ secrets.WINDOWS_USER }}
-          WINDOWS_PASSWORD = ${{ secrets.WINDOWS_PASSWORD }}
+          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
         run: |
-          anisble-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
+          ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
 
 
 # name: Configuration using Ansible
