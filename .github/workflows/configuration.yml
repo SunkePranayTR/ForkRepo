@@ -40,7 +40,7 @@ jobs:
           WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
         run: |
           cd ansible
-          ansible-playbook -i inventory/hosts.ini Playbooks/win_ping.yml
+          ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
 
 
 
