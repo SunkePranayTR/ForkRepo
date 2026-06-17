@@ -9,7 +9,7 @@
 
 - name: test connectivity for linux nodes 
   hosts: linux
-  gather_facts: true
+  # gather_facts: true
   become: true
   tasks:
     - name: ping linux servers over ssh

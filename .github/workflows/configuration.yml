@@ -1,46 +1,46 @@
-name: Configuration using Ansible
+# name: Configuration using Ansible
 
-on: 
-  push:
-    branches:
-      - ansible-16062026
-  workflow_dispatch:
+# on: 
+#   push:
+#     branches:
+#       - ansible-16062026
+#   workflow_dispatch:
 
   
-jobs:
-  test:
-    runs-on: ansible-1
+# jobs:
+#   test:
+#     runs-on: ansible-1
 
-    steps:
-      - name: Test print 
-        run: |
-          echo "Hello world"
+#     steps:
+#       - name: Test print 
+#         run: |
+#           echo "Hello world"
 
-      - name: install Ansible
-        run: |
-          python3 -m pip install --user ansible pywinrm
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+#       - name: install Ansible
+#         run: |
+#           python3 -m pip install --user ansible pywinrm
+#           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - name: Display Ansible version
-        run: |
-          ansible --version
+#       - name: Display Ansible version
+#         run: |
+#           ansible --version
 
-      - name: check the ssh id
-        run: which ssh-copy-id
+#       - name: check the ssh id
+#         run: which ssh-copy-id
 
-      - name: Checkout repo
-        uses: actions/checkout@v4
+#       - name: Checkout repo
+#         uses: actions/checkout@v4
 
-      - name: Install Windows collection
-        run: ansible-galaxy collection install ansible.windows
+#       - name: Install Windows collection
+#         run: ansible-galaxy collection install ansible.windows
 
-      - name: Run win_ping playbook
-        env:
-          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
-          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
-        run: |
-          cd ansible
-          ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
+#       - name: Run win_ping playbook
+#         env:
+#           WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+#           WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+#         run: |
+#           cd ansible
+#           ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
 
 
 
@@ -49,3 +49,26 @@ jobs:
 
           
     
+- name: Linux nodes - connectivity + PostgreSQL
+  hosts: linux
+  gather_facts: true
+  become: true
+  tasks:
+    - name: ping linux servers over ssh
+      ansible.builtin.ping:
+
+    - name: install postgresql server
+      ansible.builtin.dnf:
+        name: postgresql15-server     # <-- versioned name (not "postgresql")
+        state: present
+
+    - name: initialize the database (first run only)
+      ansible.builtin.command: postgresql-setup --initdb
+      args:
+        creates: /var/lib/pgsql/data/PG_VERSION
+
+    - name: start and enable postgresql
+      ansible.builtin.service:
+        name: postgresql
+        state: started
+        enabled: true
