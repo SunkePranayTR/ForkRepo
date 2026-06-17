@@ -1,10 +1,10 @@
 ---
-- name: Test connectivity to Windows nodes
-  hosts: windows
-  gather_facts: false
-  tasks:
-    - name: Ping Windows hosts over WinRM
-      ansible.windows.win_ping:
+# - name: Test connectivity to Windows nodes
+#   hosts: windows
+#   gather_facts: false
+#   tasks:
+#     - name: Ping Windows hosts over WinRM
+#       ansible.windows.win_ping:
 
 
 - name: test connectivity for linux nodes 
@@ -17,7 +17,7 @@
 
     - name: install postgresql
       ansible.builtin.yum:
-        name: postgresql
+        name: postgresql15-server
         state: present
 
     - name: Start postgresql service
