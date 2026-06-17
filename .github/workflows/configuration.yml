@@ -16,15 +16,9 @@ jobs:
         run: python3 -m pip install ansible
 
       - name: Display Ansible Version
-        run: ansible --version
+        run: ansible --Version
 
-      - name: update ansible to latest
-        run: python3 -m pip update ansible --latest
-
-      - name: Display Ansible Version
-        run: ansible --version
-
-      - name: Test connectivity
+      - name: call playbook
         env:
           WINDOWS_USER = ${{ secrets.WINDOWS_USER }}
           WINDOWS_PASSWORD = ${{ secrets.WINDOWS_PASSWORD }}
