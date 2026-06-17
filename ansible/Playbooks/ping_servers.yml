@@ -58,15 +58,15 @@
     - name: Ping windows
       ansible.windows.win_ping:
 
-    - name: install postgresql
-      ansible.windows.win_package:
-        name: postgresql15-server
-        state: present
+    # - name: install postgresql
+    #   ansible.windows.win_package:
+    #     name: postgresql15-server
+    #     state: present
 
-    - name: start postgresql service
-      ansible.windows.win_service:
-        name: postgresql15-server
-        state: started
+    # - name: start postgresql service
+    #   ansible.windows.win_service:
+    #     name: postgresql15-server
+    #     state: started
 
 
 
