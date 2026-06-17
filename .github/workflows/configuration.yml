@@ -9,7 +9,7 @@ on:
 
 jobs:
   ansible-connectivity:
-    runs-on: anisble-1
+    runs-on: ansible-1
 
     steps:
       - name: Install ansible
