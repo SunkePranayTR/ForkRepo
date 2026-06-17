@@ -1,49 +1,77 @@
-name: Configuration using Ansible
+name: configure the Servers using Ansible - Playbook
 
-on: 
+on:
   push:
     branches:
       - ansible-16062026
+
   workflow_dispatch:
 
-  
 jobs:
-  test:
-    runs-on: ansible-1
+  ansible-connectivity:
+    runs-on: anisble-1
 
     steps:
-      - name: Test print 
-        run: |
-          echo "Hello world"
+      - name: Install ansible
+        run: python3 -m pip install ansible
 
-      - name: install Ansible
-        run: |
-          python3 -m pip install --user ansible pywinrm
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Display Ansible Version
+        run: ansible --Version
 
-      - name: Display Ansible version
-        run: |
-          ansible --version
+      - name: update ansible to latest
+        run: python3 -m pip update ansible --latest
 
-      - name: check the ssh id
-        run: which ssh-copy-id
+      - name: Display Ansible Version
+        run: ansible --version
 
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Install Windows collection
-        run: ansible-galaxy collection install ansible.windows
-
-      - name: Run win_ping playbook
+      - name: Test connectivity
         env:
-          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
-          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+          WINDOWS_USER = ${{ secrets.WINDOWS_USER }}
+          WINDOWS_PASSWORD = ${{ secrets.WINDOWS_PASSWORD }}
         run: |
-          cd ansible
-          ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
+          anisble-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
 
 
+# name: Configuration using Ansible
 
-        
-        
+# on: 
+#   push:
+#     branches:
+#       - ansible-16062026
+#   workflow_dispatch:
 
+  
+# jobs:
+#   test:
+#     runs-on: ansible-1
+
+#     steps:
+#       - name: Test print 
+#         run: |
+#           echo "Hello world"
+
+#       - name: install Ansible
+#         run: |
+#           python3 -m pip install --user ansible pywinrm
+#           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+#       - name: Display Ansible version
+#         run: |
+#           ansible --version
+
+#       - name: check the ssh id
+#         run: which ssh-copy-id
+
+#       - name: Checkout repo
+#         uses: actions/checkout@v4
+
+#       - name: Install Windows collection
+#         run: ansible-galaxy collection install ansible.windows
+
+#       - name: Run win_ping playbook
+#         env:
+#           WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+#           WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+#         run: |
+#           cd ansible
+#           ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml

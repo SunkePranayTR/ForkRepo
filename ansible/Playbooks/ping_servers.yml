@@ -1,49 +1,61 @@
----
-- name: Test connectivity to Windows nodes
-  hosts: windows
-  gather_facts: false
-  tasks:
-    - name: Ping Windows hosts over WinRM
-      ansible.windows.win_ping:
+# ---
+# - name: Test connectivity to Windows nodes
+#   hosts: windows
+#   gather_facts: false
+#   tasks:
+#     - name: Ping Windows hosts over WinRM
+#       ansible.windows.win_ping:
 
 
-- name: test connectivity for linux nodes 
-  hosts: linux
-  # gather_facts: true
-  become: true
-  tasks:
-    - name: ping linux servers over ssh
-      ansible.builtin.ping:
-
-    - name: install postgresql
-      ansible.builtin.yum:
-        name: postgresql15-server
-        state: present
-
-    - name: Start postgresql service
-      ansible.builtin.service:
-        name: postgresql
-        state: started
-
-
-
-          
-# ---  
-# - name: Linux nodes - connectivity + PostgreSQL
+# - name: test connectivity for linux nodes 
 #   hosts: linux
-#   gather_facts: true
+#   # gather_facts: true
 #   become: true
 #   tasks:
 #     - name: ping linux servers over ssh
 #       ansible.builtin.ping:
 
-#     - name: install postgresql server
-#       ansible.builtin.dnf:
-#         name: postgresql15-server     
+#     - name: install postgresql
+#       ansible.builtin.yum:
+#         name: postgresql15-server
 #         state: present
 
-#     - name: start and enable postgresql
+#     - name: Start postgresql service
 #       ansible.builtin.service:
 #         name: postgresql
 #         state: started
-#         enabled: true
+
+
+
+          
+# # ---  
+# # - name: Linux nodes - connectivity + PostgreSQL
+# #   hosts: linux
+# #   gather_facts: true
+# #   become: true
+# #   tasks:
+# #     - name: ping linux servers over ssh
+# #       ansible.builtin.ping:
+
+# #     - name: install postgresql server
+# #       ansible.builtin.dnf:
+# #         name: postgresql15-server     
+# #         state: present
+
+# #     - name: start and enable postgresql
+# #       ansible.builtin.service:
+# #         name: postgresql
+# #         state: started
+# #         enabled: true
+
+
+
+---
+- name: Test connectivity for windows
+  hosts: windows
+  gather_facts: false
+  tasks:
+    - name: Ping windows
+      ansible.builtin.win_ping:
+
+
