@@ -58,18 +58,6 @@
     - name: Ping windows
       ansible.windows.win_ping:
 
-    # - name: install postgresql
-    #   ansible.windows.win_package:
-    #     name: postgresql15-server
-    #     state: present
-
-    # - name: start postgresql service
-    #   ansible.windows.win_service:
-    #     name: postgresql15-server
-    #     state: started
-
-
-
 - name: Working with Linux
   hosts: linux 
   gather_facts: false
@@ -82,6 +70,11 @@
       ansible.builtin.dnf:
         name: postgresql15-server
         state: present
+
+    - name: setup postgresql server
+      ansible.builtin.command: postgresql-setup --initdb
+      args:
+        creates: /var/lib/pgsql/data/PG_VERSION
 
     - name: Start postgresql server
       ansible.builtin.service:
