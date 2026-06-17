@@ -51,11 +51,40 @@
 
 
 ---
-- name: Test connectivity for windows
+- name: Working with windows
   hosts: windows
   gather_facts: false
   tasks:
     - name: Ping windows
       ansible.builtin.win_ping:
 
+    - name: install postgresql
+      ansible.builtin.win_winrm:
+        name: postgresql
+        state: present
+
+    - name: start postgresql service
+      ansible.builtin.service:
+        name: postgresql15-server
+        state: started
+
+
+
+- name: Working with Linux
+  hosts: linux 
+  gather_facts: false
+  become: true
+  tasks:
+    - name: check connectivity
+      ansible.builtin.ping:
+
+    - name: install postgresql
+      ansible.builtin.dnf:
+        name: postgresql15-server
+        state: present
+
+    - name: postgresql version
+      ansible.builtin.service:
+        name: postgresql15-server
+        state: started
 
