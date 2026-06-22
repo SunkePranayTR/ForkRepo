@@ -89,6 +89,11 @@
 
     - name: Verify verison of java
       ansible.builtin.command: java --version
+      register: java_version
+
+    - name: display java version
+      debug: 
+        var: java_version.stderr
 
     - name: Verify the version of postgresql
       command: postgresql --version
