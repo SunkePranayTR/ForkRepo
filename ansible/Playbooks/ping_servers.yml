@@ -119,7 +119,7 @@
 
 
     - name: Uninstall java
-      dnf: 
+      ansible.builtin.dnf: 
         name: java-17
         state: absent
     

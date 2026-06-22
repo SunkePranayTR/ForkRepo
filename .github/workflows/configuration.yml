@@ -1,4 +1,4 @@
-name: configure the Servers using Ansible - Playbook
+name: configure the Servers using Ansible - Playbook {{ github.run_number }}
 
 on:
   push:
