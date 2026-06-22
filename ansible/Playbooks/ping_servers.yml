@@ -1,134 +1,85 @@
-# ---
-# - name: Test connectivity to Windows nodes
-#   hosts: windows
-#   gather_facts: false
-#   tasks:
-#     - name: Ping Windows hosts over WinRM
-#       ansible.windows.win_ping:
-
-
-# - name: test connectivity for linux nodes 
-#   hosts: linux
-#   # gather_facts: true
-#   become: true
-#   tasks:
-#     - name: ping linux servers over ssh
-#       ansible.builtin.ping:
-
-#     - name: install postgresql
-#       ansible.builtin.yum:
-#         name: postgresql15-server
-#         state: present
-
-#     - name: Start postgresql service
-#       ansible.builtin.service:
-#         name: postgresql
-#         state: started
-
-
-
-          
-# # ---  
-# # - name: Linux nodes - connectivity + PostgreSQL
-# #   hosts: linux
-# #   gather_facts: true
-# #   become: true
-# #   tasks:
-# #     - name: ping linux servers over ssh
-# #       ansible.builtin.ping:
-
-# #     - name: install postgresql server
-# #       ansible.builtin.dnf:
-# #         name: postgresql15-server     
-# #         state: present
-
-# #     - name: start and enable postgresql
-# #       ansible.builtin.service:
-# #         name: postgresql
-# #         state: started
-# #         enabled: true
-
-
-
 ---
 - name: Working with windows
   hosts: windows
   gather_facts: false
-  tasks:
-    - name: Ping windows
-      ansible.windows.win_ping:
-
-- name: Working with Linux
-  hosts: linux 
-  gather_facts: false
   become: true
-  tasks:
-    - name: check connectivity
-      ansible.builtin.ping:
+  roles:
+    - postgresql
+#   tasks:
+#     - name: Ping windows
+#       ansible.windows.win_ping:
 
-    - name: install postgresql server
-      ansible.builtin.dnf:
-        name: postgresql15-server
-        state: present
+# - name: Working with Linux
+#   hosts: linux 
+#   gather_facts: false
+#   become: true
+#   tasks:
+#     - name: check connectivity
+#       ansible.builtin.ping:
 
-    - name: install java
-      ansible.builtin.dnf: 
-        name: java-17
-        state: present
+#     - name: install postgresql server
+#       ansible.builtin.dnf:
+#         name: postgresql15-server
+#         state: present
 
-    - name: setup postgresql server
-      ansible.builtin.command: postgresql-setup --initdb
-      args:
-        creates: /var/lib/pgsql/data/PG_VERSION
+#     - name: install java
+#       ansible.builtin.dnf: 
+#         name: java-17
+#         state: present
 
-    - name: Start postgresql server
-      ansible.builtin.service:
-        name: postgresql
-        state: started
-        enabled: true
+#     - name: setup postgresql server
+#       ansible.builtin.command: postgresql-setup --initdb
+#       args:
+#         creates: /var/lib/pgsql/data/PG_VERSION
 
-    - name: Verify verison of java
-      ansible.builtin.command: java --version
-      register: java_version
-      changed_when: false
+#     - name: Start postgresql server
+#       ansible.builtin.service:
+#         name: postgresql
+#         state: started
+#         enabled: true
 
-    - name: display java version
-      debug: 
-        var: java_version.stdout
+#     - name: Verify verison of java
+#       ansible.builtin.command: java --version
+#       register: java_version
+#       changed_when: false
 
-    - name: Verify the version of postgresql
-      command: psql --version
-      register: psql_version
+#     - name: display java version
+#       debug: 
+#         var: java_version.stdout
 
-    - name: Display PSQL Version
-      debug:
-        var: psql_version.stdout
+#     - name: Verify the version of postgresql
+#       command: psql --version
+#       register: psql_version
 
-    - name: Delete postgresql 
-      dnf:
-        name: postgresql
-        state: absent
+#     - name: Display PSQL Version
+#       debug:
+#         var: psql_version.stdout
 
-    # - name: get Postgreswl verison
-    #   command: psql --verison
-    #   register: postgre_version
+#     - name: Delete postgresql 
+#       dnf:
+#         name: postgresql
+#         state: absent
 
-    # - name: Display postgresql verison
-    #   debug: 
-    #     var: postgre_version.stdout
+#     # - name: get Postgreswl verison
+#     #   command: psql --verison
+#     #   register: postgre_version
+
+#     # - name: Display postgresql verison
+#     #   debug: 
+#     #     var: postgre_version.stdout
 
 
-    - name: Uninstall java
-      ansible.builtin.dnf: 
-        name: java-17
-        state: absent
+#     - name: Uninstall java
+#       ansible.builtin.dnf: 
+#         name: java-17
+#         state: absent
     
-    - name: get java verison
-      command: java --version
-      register: java_version
+#     - name: get java verison
+#       command: java --version
+#       register: java_version
 
-    - name: Display Java Version
-      debug:
-        var: java_version.stdout
+#     - name: Display Java Version
+#       debug:
+#         var: java_version.stdout
 
 
