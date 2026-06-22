@@ -104,3 +104,16 @@
       debug:
         var: psql_version.stdout
 
+    - name: Delete postgresql 
+      service:
+        name: postgresql
+        state: absent
+
+    - name: get Postgreswl verison
+      command: psql --verison
+      register: postgre_version
+
+    - name: Display postgresql verison
+      debug: 
+        var: postgre_version.stdout
+
