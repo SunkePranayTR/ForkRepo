@@ -31,6 +31,7 @@ jobs:
           ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
 
 
+
 # name: Configuration using Ansible
 
 # on: 

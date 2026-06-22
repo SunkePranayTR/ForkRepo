@@ -72,7 +72,7 @@
         state: present
 
     - name: install java
-      ansible.inbuilt.dnf: 
+      ansible.builtin.dnf: 
         name: java-17
         state: present
 
