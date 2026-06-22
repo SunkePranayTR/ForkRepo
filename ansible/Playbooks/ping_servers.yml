@@ -88,13 +88,13 @@
         enabled: true
 
     - name: Verify verison of java
-      ansible.builtin.command: java -version
+      ansible.builtin.command: java --version
       register: java_version
       changed_when: false
 
     - name: display java version
       debug: 
-        var: java_version.stderr
+        var: java_version.stdout
 
     - name: Verify the version of postgresql
       command: postgresql --version
