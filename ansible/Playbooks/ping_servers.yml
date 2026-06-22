@@ -97,10 +97,10 @@
         var: java_version.stdout
 
     - name: Verify the version of postgresql
-      command: psql -version
+      command: psql --version
       register: psql_version
 
     - name: Display PSQL Version
       debug:
-        var: psql_version.stderr
+        var: psql_version.stdout
 
