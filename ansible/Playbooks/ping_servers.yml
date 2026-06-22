@@ -88,7 +88,7 @@
         enabled: true
 
     - name: Verify verison of java
-      ansible.builtin.command: java --verison
+      ansible.builtin.command: java --version
 
     - name: Verify the version of postgresql
       command: postgresql --version
