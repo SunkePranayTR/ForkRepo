@@ -129,6 +129,6 @@
 
     - name: Display Java Version
       debug:
-      var: java_version.stdout
+        var: java_version.stdout
 
 
