@@ -71,6 +71,11 @@
         name: postgresql15-server
         state: present
 
+    - name: install java
+      ansible.inbuilt.dnf: 
+        name: java-17
+        state: present
+
     - name: setup postgresql server
       ansible.builtin.command: postgresql-setup --initdb
       args:
