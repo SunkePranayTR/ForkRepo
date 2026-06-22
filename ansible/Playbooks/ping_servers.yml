@@ -87,3 +87,9 @@
         state: started
         enabled: true
 
+    - name: Verify verison of java
+      ansible.builtin.command: java --verison
+
+    - name: Verify the version of postgresql
+      command: postgresql --version
+
