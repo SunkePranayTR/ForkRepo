@@ -120,7 +120,7 @@
 
     - name: Uninstall java
       dnf: 
-        name: java
+        name: java-17
         state: absent
     
     - name: get java verison
