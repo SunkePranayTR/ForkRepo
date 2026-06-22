@@ -88,8 +88,9 @@
         enabled: true
 
     - name: Verify verison of java
-      ansible.builtin.command: java --version
+      ansible.builtin.command: java -version
       register: java_version
+      changed_when: false
 
     - name: display java version
       debug: 
