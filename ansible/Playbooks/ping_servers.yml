@@ -97,5 +97,5 @@
         var: java_version.stdout
 
     - name: Verify the version of postgresql
-      command: postgresql --version
+      command: plsql --version
 
