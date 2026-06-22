@@ -117,3 +117,18 @@
       debug: 
         var: postgre_version.stdout
 
+
+    - name: Uninstall java
+      dnf: 
+        name: java
+        state: absent
+    
+    - name: get java verison
+      command: java --version
+      register: java_version
+
+    - name: Display Java Version
+      debug:
+      var: java_version.stdout
+
+
