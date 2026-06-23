@@ -6,9 +6,12 @@
     - name: Ping windows
       ansible.windows.win_ping:
 
+    # - name: Install chocolatey
+    #   command: python3 pip install temuirn17
+
     - name: install java
       chocolatey.chocolatey.win_chocolatey:
-        name: temuirn17
+        name: temurin17
         state: present
 
 - name: Working with Linux
