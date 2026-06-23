@@ -1,0 +1,20 @@
+---
+- name: ping windows Servers 
+  ansible.windows.win_ping:
+
+- name: Install java  
+  chocolatey.chocolatey.win_chocolatey:
+    name: temurin17
+    state: present
+
+
+- name: install postgresql
+  chocolatey.chocolatey.win_chocolatey:
+    name: postgresql
+    state: present
+
+- name: start postgresql server 
+  ansible.windows.win_service:
+    name: postgresql-x64-16
+    state: started
+

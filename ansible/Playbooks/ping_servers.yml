@@ -1,79 +1,95 @@
----
-- name: Working with windows
-  hosts: windows
-  gather_facts: false
-  tasks:
-    - name: Ping windows
-      ansible.windows.win_ping:
+# ---
+# - name: Working with windows
+#   hosts: windows
+#   gather_facts: false
+#   tasks:
+#     - name: Ping windows
+#       ansible.windows.win_ping:
 
-    - name: install java
-      chocolatey.chocolatey.win_chocolatey:
-        name: temurin17
-        state: present
+#     - name: install java
+#       chocolatey.chocolatey.win_chocolatey:
+#         name: temurin17
+#         state: present
 
-    - name: get java version  
-      win_command: java --version
-      register: java_win_version
+#     - name: get java version  
+#       win_command: java --version
+#       register: java_win_version
 
-    - name: Display java Version
-      debug:
-        var: java_win_version.stdout
+#     - name: Display java Version
+#       debug:
+#         var: java_win_version.stdout
 
-- name: Working with Linux
-  hosts: linux 
-  gather_facts: false
-  become: true
-  tasks:
-    - name: check connectivity
-      ansible.builtin.ping:
+# - name: Working with Linux
+#   hosts: linux 
+#   gather_facts: false
+#   become: true
+#   tasks:
+#     - name: check connectivity
+#       ansible.builtin.ping:
 
-    - name: install postgresql server
-      ansible.builtin.dnf:
-        name: postgresql15-server
-        state: present
+#     - name: install postgresql server
+#       ansible.builtin.dnf:
+#         name: postgresql15-server
+#         state: present
 
-    - name: install java
-      ansible.builtin.dnf: 
-        name: java-17-amazon-corretto
-        state: present
+#     - name: install java
+#       ansible.builtin.dnf: 
+#         name: java-17-amazon-corretto
+#         state: present
 
-    - name: setup postgresql server
-      ansible.builtin.command: postgresql-setup --initdb
-      args:
-        creates: /var/lib/pgsql/data/PG_VERSION
+#     - name: setup postgresql server
+#       ansible.builtin.command: postgresql-setup --initdb
+#       args:
+#         creates: /var/lib/pgsql/data/PG_VERSION
 
-    - name: Start postgresql server
-      ansible.builtin.service:
-        name: postgresql
-        state: started
-        enabled: true
+#     - name: Start postgresql server
+#       ansible.builtin.service:
+#         name: postgresql
+#         state: started
+#         enabled: true
 
-    - name: Verify verison of java
-      ansible.builtin.command: java --version
-      register: java_version
-      changed_when: false
+#     - name: Verify verison of java
+#       ansible.builtin.command: java --version
+#       register: java_version
+#       changed_when: false
 
-    - name: display java version
-      debug: 
-        var: java_version.stdout
+#     - name: display java version
+#       debug: 
+#         var: java_version.stdout
 
-    - name: Delete java
-      dnf:
-        name: java-17-amazon-corretto
-        state: absent
+#     - name: Delete java
+#       dnf:
+#         name: java-17-amazon-corretto
+#         state: absent
 
-    - name: Get java Version
-      command: java --version
-      register: java_version1
+#     - name: Get java Version
+#       command: java --version
+#       register: java_version1
 
-    - name: Display Java Version
-      debug:
-        var: java_version1.stdout
+#     - name: Display Java Version
+#       debug:
+#         var: java_version1.stdout
 
-    - name: Verify the version of postgresql
-      command: psql --version
-      register: psql_version
+#     - name: Verify the version of postgresql
+#       command: psql --version
+#       register: psql_version
 
-    - name: Display PSQL Version
-      debug:
-        var: psql_version.stdout
+#     - name: Display PSQL Version
+#       debug:
+#         var: psql_version.stdout
+
+
+
+--- 
+- name: configure windows Servers
+  hosts: windows  
+  gather_facts: true
+  roles:
+    - windowsconfig
+
+
+- name: confiure linux Servers
+  hosts: linux
+  gather_facts: true
+  roles: 
+    - linuxconfig
