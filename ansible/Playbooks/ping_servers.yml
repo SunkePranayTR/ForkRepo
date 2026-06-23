@@ -14,6 +14,14 @@
         name: temurin17
         state: present
 
+    - name: get java version  
+      command: java --version
+      register: java_win_version
+
+    - name: Display java Version
+      debug:
+        var: java_win_version.stdout
+
 - name: Working with Linux
   hosts: linux 
   gather_facts: false
