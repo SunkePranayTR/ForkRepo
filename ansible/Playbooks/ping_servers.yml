@@ -6,16 +6,13 @@
     - name: Ping windows
       ansible.windows.win_ping:
 
-    # - name: Install chocolatey
-    #   command: python3 pip install temuirn17
-
     - name: install java
       chocolatey.chocolatey.win_chocolatey:
         name: temurin17
         state: present
 
     - name: get java version  
-      command: java --version
+      win_command: java --version
       register: java_win_version
 
     - name: Display java Version
