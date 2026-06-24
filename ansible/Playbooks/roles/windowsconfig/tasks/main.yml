@@ -13,8 +13,19 @@
     name: postgresql
     state: present
 
+- name: get the postgresql version details
+  ansible.windows.win_shell: (Get-Service postgresql-x64-*).name
+  register: postgresql_name
+  changed_when: false
+
+- name: Display Postgresql version
+  ansible.windows.debug:
+  var:
+    postgresql_name.stdout
+
+
 - name: start postgresql server on windows server
   ansible.windows.win_service:
-    name: postgresql-x64-18.4
+    name: "{{ postgresql_name.stdout | trim }}"
     state: started
 
