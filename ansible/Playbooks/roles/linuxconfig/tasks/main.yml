@@ -22,5 +22,4 @@
     name: postgresql
     state: started
     enabled: true
-    start_mode: auto
-    notify: restart_postgresql
+  notify: restart_postgresql
