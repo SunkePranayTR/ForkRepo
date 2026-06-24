@@ -15,6 +15,6 @@
 
 - name: start postgresql server on windows server
   ansible.windows.win_service:
-    name: postgresql-x64-17
+    name: postgresql-x64-18.4
     state: started
 
