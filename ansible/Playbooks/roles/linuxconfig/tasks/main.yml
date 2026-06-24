@@ -17,11 +17,6 @@
   args:
     creates: /var/lib/pgsql/data/PG_VERSION
 
-# - name: start postgresql on linux
-#   ansible.builtin.service:
-#     name: postgresql
-#     state: stopped
-
 - name: start postgresql on linux
   ansible.builtin.service:
     name: postgresql
@@ -30,3 +25,10 @@
   notify: 
     - Check_handlers
     - restart_postgresql
+
+- name: Deploy index html on Linux Servers
+  ansible.builtin.copy:
+    src: "{{index_src}}"
+    dest: "{{index_dest}}"
+    owner: "{{deploy_owner}}"
+    mode: "{{file_mode}}"

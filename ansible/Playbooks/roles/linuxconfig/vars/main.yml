@@ -1,0 +1,8 @@
+---
+web_package: httpd
+web_service: httpd
+http_post: 80
+index_src: index.html
+index_dest: "{{webroot}}/index.html"
+file_mode: 0644
+heading_tag: h1
