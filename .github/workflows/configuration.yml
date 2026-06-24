@@ -26,7 +26,7 @@ jobs:
         run: pip install boto3
 
       - name: install aws collections from ansible-galaxy
-        run: anisble-galaxy collection install amazon.aws
+        run: ansible-galaxy collection install amazon.aws
 
       - name: call playbook
         env:
