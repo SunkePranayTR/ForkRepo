@@ -20,8 +20,7 @@
 
 - name: Display Postgresql version
   debug:
-  var:
-    postgresql_name.stdout
+    var: postgresql_name.stdout
 
 
 - name: start postgresql server on windows server
