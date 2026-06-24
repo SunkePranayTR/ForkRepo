@@ -22,6 +22,12 @@ jobs:
       - name: Display Ansible Version
         run: ansible --version
 
+      - name: install boto3 
+        run: pip install boto3
+
+      - name: install aws collections
+        run: anisble-collections install amazon.aws
+
       - name: call playbook
         env:
           WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
