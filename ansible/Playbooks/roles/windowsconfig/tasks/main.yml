@@ -19,7 +19,7 @@
   changed_when: false
 
 - name: Display Postgresql version
-  ansible.windows.debug:
+  debug:
   var:
     postgresql_name.stdout
 
