@@ -10,11 +10,11 @@
 
 - name: install postgresql on windows server
   chocolatey.chocolatey.win_chocolatey:
-    name: postgresql-16
+    name: postgresql
     state: present
 
 - name: start postgresql server on windows server
   ansible.windows.win_service:
-    name: postgresql-x64-16
+    name: postgresql-x64-17
     state: started
 
