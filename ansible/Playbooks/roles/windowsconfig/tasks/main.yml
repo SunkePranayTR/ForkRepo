@@ -28,3 +28,7 @@
     name: "{{ postgresql_name.stdout | trim }}"
     state: started
 
+- name: install chrome on windows 
+  chocolatey.chocolatey.win_chocolatey:
+    name: googlechrome
+    state: present
