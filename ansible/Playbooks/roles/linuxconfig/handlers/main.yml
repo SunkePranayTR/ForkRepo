@@ -6,4 +6,4 @@
 
 - name: Check_handlers
   debug:
-    var: "Hello.stdout"
+    msg: "Hello handlers are triggered"

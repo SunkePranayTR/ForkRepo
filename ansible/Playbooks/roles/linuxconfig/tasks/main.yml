@@ -22,6 +22,7 @@
     name: postgresql
     state: started
     enabled: true
+    force_handlers: true
   notify: 
     - Check_handlers
     - restart_postgresql
