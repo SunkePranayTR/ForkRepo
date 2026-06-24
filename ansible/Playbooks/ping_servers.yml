@@ -90,6 +90,7 @@
 
 - name: confiure linux Servers
   hosts: linux
+  force_handlers: true
   become: true
   gather_facts: true
   roles: 

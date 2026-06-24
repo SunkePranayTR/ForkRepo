@@ -17,17 +17,16 @@
   args:
     creates: /var/lib/pgsql/data/PG_VERSION
 
-- name: start postgresql on linux
-  ansible.builtin.service:
-    name: postgresql
-    state: stopped
+# - name: start postgresql on linux
+#   ansible.builtin.service:
+#     name: postgresql
+#     state: stopped
 
 - name: start postgresql on linux
   ansible.builtin.service:
     name: postgresql
     state: started
     enabled: true
-    # force_handlers: true
   notify: 
     - Check_handlers
     - restart_postgresql
