@@ -15,15 +15,15 @@
       amazon.aws.ec2_instance:
         name: "a2018114-gst-nonprod-ansible-created-ec2"
         region: us-east-1
-        image_id: ami-0e25a00770c19fd4b        # AMI (reuse a known one)
         instance_type: t3.micro
         subnet_id: subnet-0381bbe2dccd4e234     # your subnet
+        image_id: ami-0e25a00770c19fd4b
         security_groups:
           - sg-07ec9894488ad7ffc
           - sg-0ff53047c5a52d86f
           - sg-001813c0a32d12ea9                # an existing SG in that VPC
         network:
-          assign_public_ip: false
+          assign_public_ip: true
         tags:
           tr:application-asset-insight-id: 201814
           tr:environment-type: "DEVELOPMENT"
