@@ -19,7 +19,9 @@
         instance_type: t3.micro
         subnet_id: subnet-0381bbe2dccd4e234     # your subnet
         security_groups:
-          - sg-0026f2959601429ed                # an existing SG in that VPC
+          - sg-07ec9894488ad7ffc
+          - sg-0ff53047c5a52d86f
+          - sg-001813c0a32d12ea9                # an existing SG in that VPC
         network:
           assign_public_ip: false
         tags:
