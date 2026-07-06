@@ -1,0 +1,35 @@
+- name: playbook for AWS resource creation
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: check connectivity
+      amazon.aws.aws_caller_info:
+      register: aws_identity
+
+    - name: show identity
+      ansible.builtin.debug:
+        var: aws_identity.arn
+
+    - name: create ec2
+      amazon.aws.ec2_instance:
+        name: "a2018114-gst-nonprod-ansible-created-ec2"
+        region: us-east-1
+        image_id: ami-0e25a00770c19fd4b        # AMI (reuse a known one)
+        instance_type: t3.micro
+        subnet_id: subnet-0381bbe2dccd4e234     # your subnet
+        security_groups:
+          - sg-0026f2959601429ed                # an existing SG in that VPC
+        network:
+          assign_public_ip: false
+        tags:
+          tr:application-asset-insight-id: 201814
+          tr:environment-type: "DEVELOPMENT"
+          tr:resource-owner: "ATPA-GST-DevOps@thomsonreuters.com"
+        count: 1
+        wait: true
+      register: ec2_result
+
+    - name: show new instance
+      ansible.builtin.debug:
+        var: ec2_result.instances
