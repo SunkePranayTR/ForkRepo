@@ -12,7 +12,6 @@ jobs:
     runs-on: ansible-1
 
     steps:
-
       - name: checkout repo
         uses: actions/checkout@v4
 
@@ -28,13 +27,17 @@ jobs:
       - name: install aws collections from ansible-galaxy
         run: ansible-galaxy collection install amazon.aws
 
-      - name: call playbook
-        env:
-          WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
-          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
-        run: |
-          cd ansible
-          ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
+      # - name: call playbook
+      #   env:
+      #     WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
+      #     WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+      #   run: |
+      #     cd ansible
+      #     ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
+
+
+      - name: check AWS connection
+        run: ansible localhost -m amazon.aws.aws_caller_info
 
 
 
