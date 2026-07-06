@@ -39,6 +39,11 @@ jobs:
       - name: check AWS connection
         run: ansible localhost -m amazon.aws.aws_caller_info
 
+      - name: call ec2 playbook 
+        run: |
+          cd ansible
+          ansible-playbook - i inventory/hosts.ini Playbooks/create_ec2.yml 
+
 
 
 # name: Configuration using Ansible
