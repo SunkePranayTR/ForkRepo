@@ -1,3 +1,4 @@
+---
 - name: playbook for AWS resource creation
   hosts: localhost
   connection: local

@@ -33,3 +33,8 @@
     name: googlechrome
     state: present
     ignore_checksums: true
+
+- name: copy zip files to Windows - server
+  ansible.windows.win_copy:
+    src: ./publish.zip
+    dest: C:\
