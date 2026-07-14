@@ -34,6 +34,32 @@
     state: present
     ignore_checksums: true
 
+
+
+
+- name: Ensure C:\Temp exists
+  ansible.windows.win_file:
+    path: C:\Temp
+    state: directory
+
+- name: Download ASP.NET Core Hosting Bundle
+  ansible.windows.win_get_url:
+    url: https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.17/dotnet-hosting-9.0.17-win.exe
+    dest: C:\Temp\dotnet-hosting.exe
+
+- name: Install ASP.NET Core Hosting Bundle
+  ansible.windows.win_package:
+    path: C:\Temp\dotnet-hosting.exe
+    arguments: /install /quiet /norestart
+    state: present
+    creates_path: C:\Windows\System32\inetsrv\aspnetcorev2.dll
+
+# - name: Restart IIS to load the module
+#   ansible.windows.win_service:
+#     name: W3SVC
+#     state: restarted
+
+
 # - name: Display current Working directory and files in it
 #   ansible.windows.command: ls
 
