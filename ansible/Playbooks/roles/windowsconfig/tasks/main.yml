@@ -37,8 +37,8 @@
 # - name: Display current Working directory and files in it
 #   ansible.windows.command: ls
 
-- name: copy zip files to Windows - server
-  ansible.windows.win_copy:
-    src: publish.zip
-    dest: C:\publish.zip
+# - name: copy zip files to Windows - server
+#   ansible.windows.win_copy:
+#     src: publish.zip
+#     dest: C:\publish.zip
 
