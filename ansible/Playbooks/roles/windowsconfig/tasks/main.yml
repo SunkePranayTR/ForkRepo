@@ -54,10 +54,10 @@
     state: present
     creates_path: C:\Windows\System32\inetsrv\aspnetcorev2.dll
 
-# - name: Restart IIS to load the module
-#   ansible.windows.win_service:
-#     name: W3SVC
-#     state: restarted
+- name: Restart IIS to load the module
+  ansible.windows.win_service:
+    name: W3SVC
+    state: restarted
 
 
 # - name: Display current Working directory and files in it
