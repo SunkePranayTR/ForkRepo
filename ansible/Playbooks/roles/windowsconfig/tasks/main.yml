@@ -59,12 +59,30 @@
     name: W3SVC
     state: restarted
 
-
-# - name: Display current Working directory and files in it
-#   ansible.windows.command: ls
-
 - name: copy zip files to Windows - server
   ansible.windows.win_copy:
     src: publish.zip
     dest: C:\publish.zip
+
+- name: Extract the zip files to the server
+  community.windows.win_unzip:
+    src: C:\publish.zip
+    dest: C:\WebApp
+    creates: C:\WebApp\publish\WebApp.dll
+
+- name: Create IIS web app pool - no managed code
+  community.windows.win_iis_webapppool:
+    name: webapppool
+    state: started
+    attributes:
+      managedRuntimeVersion: ""
+
+
+- name: create iis wesite on port 8080
+  community.windows.win_iis_website:
+    name: WebApp
+    state: started
+    port: 8080
+    physical_path: C:\WebApp\publish
+    application_pool: webapppool
 
