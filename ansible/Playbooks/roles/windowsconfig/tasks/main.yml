@@ -55,17 +55,16 @@
     path: C:\webapp
     state: absent
 
+- name: delete app win_iis_website
+  ansible.windows.win_iis_website:
+    name: WebApp 
+    state: absent
+
 - name: delete app pool
   ansible.windows.win_iis_webapppool:
     name: webapppool
     state: absent
 
-
-- name: delete app win_iis_website
-  ansible.windows.win_iis_website:
-    name: WebApp 
-    state: absent
-  
 
 # ------------  Adding the deleted files to deploy again  ----------
 
@@ -82,9 +81,9 @@
 - name: Install ASP.NET Core Hosting Bundle
   ansible.windows.win_package:
     path: C:\Temp\dotnet-hosting.exe
-    arguments: /install /quiet /norestart
+    arguments: /install /repair /quiet /norestart
     state: present
-    creates_path: C:\Windows\System32\inetsrv\aspnetcorev2.dll
+    creates_path: C:\Program Files\IIS\Asp.Net Core Module\V2\
 
 - name: Restart IIS to load the module
   ansible.windows.win_service:
