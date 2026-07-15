@@ -31,12 +31,12 @@
     name: "{{web_package}}"
     state: present
 
-- name: Deploy index html on Linux Servers
-  ansible.builtin.copy:
-    src: "{{index_src}}"
-    dest: "{{index_dest}}"
-    owner: "{{deploy_owner}}"
-    mode: "{{file_mode}}"
+# - name: Deploy index html on Linux Servers
+#   ansible.builtin.copy:
+#     src: "{{index_src}}"
+#     dest: "{{index_dest}}"
+#     owner: "{{deploy_owner}}"
+#     mode: "{{file_mode}}"
 
 - name: Start httpd service on linux servers
   ansible.builtin.service:
