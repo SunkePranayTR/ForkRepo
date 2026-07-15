@@ -81,11 +81,12 @@
 
 
 --- 
-- name: configure windows Servers
-  hosts: windows  
-  gather_facts: true
-  roles:
-    - windowsconfig
+
+# - name: configure windows Servers
+#   hosts: windows  
+#   gather_facts: true
+#   roles:
+#     - windowsconfig
 
 
 - name: confiure linux Servers
