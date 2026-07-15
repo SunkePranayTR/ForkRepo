@@ -51,7 +51,7 @@
     state: absent
 
 - name: Delete dll files
-  ansible.windows.file:
+  ansible.windows.win_file:
     path: C:\webapp
     state: absent
 
