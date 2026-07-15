@@ -49,11 +49,11 @@
 # ---------   Deployment -----
 
 
-- name: delete the files on the linux servers
-  ansible.builtin.file:
-    path: /opt/webapp
-    state: absent
-  become: true
+# - name: delete the files on the linux servers
+#   ansible.builtin.file:
+#     path: /opt/webapp
+#     state: absent
+#   become: true
 
 - name: create a directory to copy application files
   ansible.builtin.file:
@@ -65,6 +65,6 @@
   ansible.builtin.unarchive:
     src: publish.zip
     dest: /opt/webapp
-    creates: /opt/webapp/WebApp.dll
+    creates: /opt/webapp/publish/WebApp.dll
   become: true
 
