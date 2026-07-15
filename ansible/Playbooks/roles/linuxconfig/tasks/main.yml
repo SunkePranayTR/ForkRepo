@@ -57,5 +57,3 @@
     creates: /opt/webapp/publish/webapp.dll
   become: true
 
-- name: 
-
