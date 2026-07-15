@@ -43,3 +43,19 @@
     name: "{{web_service}}"
     state: started
     enabled: true
+
+- name: create a directory to copy application files
+  ansible.builtin.file:
+    path: /opt/webapp
+    state: directory
+  become: true
+
+- name: extract zip files to the path  
+  ansible.builtin.unarchive:
+    src: publish.zip
+    dest: /opt/webapp
+    creates: /opt/webapp/publish/webapp.dll
+  become: true
+
+- name: 
+
