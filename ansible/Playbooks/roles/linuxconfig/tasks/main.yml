@@ -61,10 +61,32 @@
     state: directory
   become: true
 
-- name: extract zip files to the path  
-  ansible.builtin.unarchive:
-    src: publish.zip
-    dest: /opt/webapp
-    creates: /opt/webapp/publish/WebApp.dll
+# - name: extract zip files to the path  
+#   ansible.builtin.unarchive:
+#     src: publish.zip
+#     dest: /opt/webapp
+#     creates: /opt/webapp/publish/WebApp.dll
+#   become: true
+
+- name: unzip the file
+  ansible.builtin.dnf:
+    name: unzip
+    state: present
   become: true
+
+- name: copy zip to the server
+  ansible.builtin.copy:
+    src: publish.zip
+    dest: /tmp/publish.zip
+  become: true
+
+- name: extract the app (tolerate unzip backslash warning)
+  ansible.builtin.command: unzip -o /tmp/publish.zip -d /opt/webapp
+  register: unzip_result
+  changed_when: "'inflating' in unzip_result.stdout"
+  failed_when: unzip_result.rc > 1
+  become: true
+
+
+
 
