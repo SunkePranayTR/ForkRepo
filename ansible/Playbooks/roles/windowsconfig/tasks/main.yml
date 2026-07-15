@@ -46,7 +46,7 @@
     state: absent
 
 - name: delete zip file from the server 
-  ansinle.windows.win_file:
+  ansible.windows.win_file:
     path: C:\publish.zip
     state: absent
 
