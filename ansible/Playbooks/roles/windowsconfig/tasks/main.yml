@@ -56,12 +56,12 @@
     state: absent
 
 - name: delete app win_iis_website
-  ansible.windows.win_iis_website:
+  community.windows.win_iis_website:
     name: WebApp 
     state: absent
 
 - name: delete app pool
-  ansible.windows.win_iis_webapppool:
+  community.windows.win_iis_webapppool:
     name: webapppool
     state: absent
 
