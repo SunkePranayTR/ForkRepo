@@ -31,6 +31,12 @@
     name: "{{web_package}}"
     state: present
 
+- name: Start httpd service on linux servers
+  ansible.builtin.service:
+    name: "{{web_service}}"
+    state: started
+    enabled: true
+
 # - name: Deploy index html on Linux Servers
 #   ansible.builtin.copy:
 #     src: "{{index_src}}"
@@ -38,11 +44,16 @@
 #     owner: "{{deploy_owner}}"
 #     mode: "{{file_mode}}"
 
-- name: Start httpd service on linux servers
-  ansible.builtin.service:
-    name: "{{web_service}}"
-    state: started
-    enabled: true
+
+
+# ---------   Deployment -----
+
+
+- name: delete the files on the linux servers
+  ansible.builtin.file:
+    path: /opt/webapp
+    state: absent
+  become: true
 
 - name: create a directory to copy application files
   ansible.builtin.file:

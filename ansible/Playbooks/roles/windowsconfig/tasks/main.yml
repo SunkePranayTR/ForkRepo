@@ -35,7 +35,39 @@
     ignore_checksums: true
 
 
+# ----------- Deployment ---
 
+
+    # ---------------   Delete the previous files  -----------
+
+- name: delete the temp file on the server  
+  ansible.windows.win_file:
+    path: C:\Temp
+    state: absent
+
+- name: delete zip file from the server 
+  ansinle.windows.win_file:
+    path: C:\publish.zip
+    state: absent
+
+- name: Delete dll files
+  ansible.windows.file:
+    path: C:\webapp
+    state: absent
+
+- name: delete app pool
+  ansible.windows.win_iis_webapppool:
+    name: webapppool
+    state: absent
+
+
+- name: delete app win_iis_website
+  ansible.windows.win_iis_website:
+    name: WebApp 
+    state: absent
+  
+
+# ------------  Adding the deleted files to deploy again  ----------
 
 - name: Ensure C:\Temp exists
   ansible.windows.win_file:
