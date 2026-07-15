@@ -54,6 +54,6 @@
   ansible.builtin.unarchive:
     src: publish.zip
     dest: /opt/webapp
-    creates: /opt/webapp/publish/webApp.dll
+    creates: /opt/webapp/publish/WebApp.dll
   become: true
 
