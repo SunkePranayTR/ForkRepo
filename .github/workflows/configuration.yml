@@ -32,25 +32,25 @@ jobs:
       - name: check AWS connection
         run: ansible localhost -m amazon.aws.aws_caller_info
 
-      - name: Bake Linux AMI with Packer
-        run: |
-          set -eo pipefail
-          # install packer without sudo (single binary into ~/bin, unzip via python)
-          PACKER_VERSION=1.11.2
-          curl -fsSL -o /tmp/packer.zip "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
-          mkdir -p "$HOME/bin"
-          python3 -m zipfile -e /tmp/packer.zip "$HOME/bin/"
-          chmod +x "$HOME/bin/packer"
-          export PATH="$HOME/bin:$PATH"
+      # - name: Bake Linux AMI with Packer
+      #   run: |
+      #     set -eo pipefail
+      #     # install packer without sudo (single binary into ~/bin, unzip via python)
+      #     PACKER_VERSION=1.11.2
+      #     curl -fsSL -o /tmp/packer.zip "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip"
+      #     mkdir -p "$HOME/bin"
+      #     python3 -m zipfile -e /tmp/packer.zip "$HOME/bin/"
+      #     chmod +x "$HOME/bin/packer"
+      #     export PATH="$HOME/bin:$PATH"
 
-          cd packer
-          packer init .
-          packer build . 2>&1 | tee /tmp/packer_build.log
-          # capture the baked AMI id into a single variable (last ami- in the log = the new one)
-          AMI_ID=$(grep -oE 'ami-[0-9a-f]+' /tmp/packer_build.log | tail -1)
-          echo "Baked Linux AMI: $AMI_ID"
-          # persist it so the next step's ansible can read it via lookup('env','LINUX_AMI')
-          echo "LINUX_AMI=$AMI_ID" >> "$GITHUB_ENV"
+      #     cd packer
+      #     packer init .
+      #     packer build . 2>&1 | tee /tmp/packer_build.log
+      #     # capture the baked AMI id into a single variable (last ami- in the log = the new one)
+      #     AMI_ID=$(grep -oE 'ami-[0-9a-f]+' /tmp/packer_build.log | tail -1)
+      #     echo "Baked Linux AMI: $AMI_ID"
+      #     # persist it so the next step's ansible can read it via lookup('env','LINUX_AMI')
+      #     echo "LINUX_AMI=$AMI_ID" >> "$GITHUB_ENV"
 
       - name: Create ec2 instnaces using Ansible
         env:
