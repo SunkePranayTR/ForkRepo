@@ -78,6 +78,7 @@
   ansible.builtin.copy:
     src: publish.zip
     dest: /tmp/publish.zip
+    file_mode: 0644
   become: true
 
 - name: extract the app (tolerate unzip backslash warning)

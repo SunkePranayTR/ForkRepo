@@ -1,38 +1,117 @@
 ---
-- name: playbook for AWS resource creation
+- name: Playbok that creates EC2 instances
   hosts: localhost
   connection: local
-  gather_facts: false
+  gather_facts: true
+  vars:
+    region: us-east-1
+    win_ami_id: ami-031e7b893538575ba
+    linux_ami_id: ami-0e25a00770c19fd4b
+    subnet: subnet-0381bbe2dccd4e234
+    security_groups: 
+      - sg-07ec9894488ad7ffc
+      - sg-0ff53047c5a52d86f
+    common_tags:
+      "tr:application-asset-insight-id": "201814"
+      "tr:environment-type": "DEVELOPMENT"
+      "tr:resource-owner": "ATPA-GST-DevOps@thomsonreuters.com"
+
   tasks:
-    - name: check connectivity
-      amazon.aws.aws_caller_info:
-      register: aws_identity
-
-    - name: show identity
-      ansible.builtin.debug:
-        var: aws_identity.arn
-
-    - name: create ec2
+    - name: create an ec2 for windows 
       amazon.aws.ec2_instance:
-        name: "a2018114-gst-nonprod-ansible-created-ec2"
-        region: us-east-1
+        name: "a201814-gst-nonprod-win-ins1"
+        region: "{{ region }}"
         instance_type: t3.micro
-        subnet_id: subnet-0381bbe2dccd4e234     # your subnet
-        image_id: ami-0e25a00770c19fd4b
-        security_groups:
-          - sg-07ec9894488ad7ffc
-          - sg-0ff53047c5a52d86f
-          - sg-001813c0a32d12ea9                # an existing SG in that VPC
-        network:
-          assign_public_ip: true
-        tags:
-          tr:application-asset-insight-id: 201814
-          tr:environment-type: "DEVELOPMENT"
-          tr:resource-owner: "ATPA-GST-DevOps@thomsonreuters.com"
-        count: 1
+        subnet_id: "{{ subnet }}"
+        image_id: "{{win_ami_id}}"
+        security_groups: "{{ security_groups }}"
+        tags: "{{ common_tags }}"
+        exact_count: 1
         wait: true
-      register: ec2_result
+        user_data: "{{ lookup('file','files/winrm_user_data.ps1')}}" 
+      register: win_instance
 
-    - name: show new instance
+    - name: Create linux Ec2 instances
+      amazon.aws.ec2_instance:
+        name: "a201814-gst-nonprod-linux-ins1"
+        region: "{{ region }}"
+        instance_type: t3.micro
+        subnet_id: "{{ subnet }}"
+        image_id: "{{ linux_ami_id }}"
+        security_groups: "{{ security_groups }}"
+        tags: "{{ common_tags }}"
+        exact_count: 1
+        wait: true
+        user_data: "{{ lookup('template', 'templates/linux_user_data.sh.j2')}}"
+      register: linux_instance
+
+
+    - name: Display IP's of instsnces
       ansible.builtin.debug:
-        var: ec2_result.instances
+        msg:
+          - "Windows: - {{win_instance.instances[0].private_ip_address }}"
+          - "Linux:   - {{linux_instance.instances[0].private_ip_address }}"
+
+    - name: wait for the windows instance come online
+      ansible.builtin.wait_for:
+        host:  "{{ win_instance.instances[0].private_ip_address }}"
+        port: 5986
+        timeout: 600
+    
+    - name: wait for linux instnace come online 
+      ansible.builtin.wait_for:
+        host: "{{ linux_instance.instances[0].private_ip_address}}"
+        port: 22
+        timeout: 600
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ---
+# - name: playbook for AWS resource creation
+#   hosts: localhost
+#   connection: local
+#   gather_facts: false
+#   tasks:
+#     - name: check connectivity
+#       amazon.aws.aws_caller_info:
+#       register: aws_identity
+
+#     - name: show identity
+#       ansible.builtin.debug:
+#         var: aws_identity.arn
+
+#     - name: create ec2
+#       amazon.aws.ec2_instance:
+#         name: "a2018114-gst-nonprod-ansible-created-ec2"
+#         region: us-east-1
+#         instance_type: t3.micro
+#         subnet_id: subnet-0381bbe2dccd4e234     # your subnet
+#         image_id: ami-0e25a00770c19fd4b
+#         security_groups:
+#           - sg-07ec9894488ad7ffc
+#           - sg-0ff53047c5a52d86f
+#           - sg-001813c0a32d12ea9                # an existing SG in that VPC
+#         network:
+#           assign_public_ip: true
+#         tags:
+#           tr:application-asset-insight-id: 201814
+#           tr:environment-type: "DEVELOPMENT"
+#           tr:resource-owner: "ATPA-GST-DevOps@thomsonreuters.com"
+#         count: 1
+#         wait: true
+#       register: ec2_result
+
+#     - name: show new instance
+#       ansible.builtin.debug:
+#         var: ec2_result.instances

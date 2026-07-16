@@ -27,24 +27,31 @@ jobs:
       - name: install aws collections from ansible-galaxy
         run: ansible-galaxy collection install amazon.aws
 
+      # Working with AWS to create instances and run userdata for windows
+
+      - name: check AWS connection
+        run: ansible localhost -m amazon.aws.aws_caller_info
+
+      - name: Create ec2 instnaces using Ansible
+        env: 
+          WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
+        run: |
+          cd ansible
+          ansible-playbook -i inventory/hosts.ini Playbooks/create_ec2.yml 
+
       - name: call playbook
         env:
           WINDOWS_USER: ${{ secrets.WINDOWS_USER }}
           WINDOWS_PASSWORD: ${{ secrets.WINDOWS_PASSWORD }}
         run: |
           cd ansible
-          ansible-playbook -i inventory/hosts.ini Playbooks/ping_servers.yml
+          ansible-playbook -i inventory/hosts.ini Playbooks/configure_deploy.yml
 
 
-      # - name: check AWS connection
-      #   run: ansible localhost -m amazon.aws.aws_caller_info
-
-      # - name: call ec2 playbook 
-      #   run: |
-      #     cd ansible
-      #     ansible-playbook -i inventory/hosts.ini Playbooks/create_ec2.yml 
 
 
+
+# --------------    Dupllicated code of the above code    -------------------------
 
 # name: Configuration using Ansible
 
