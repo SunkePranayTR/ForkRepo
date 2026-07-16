@@ -6,7 +6,7 @@
   vars:
     region: us-east-1
     win_ami_id: ami-031e7b893538575ba
-    linux_ami_id: ami-0e25a00770c19fd4b
+    linux_ami_id: "{{ lookup('env', 'LINUX_AMI') }}"   # baked AMI id, exported by the pipeline
     subnet: subnet-0381bbe2dccd4e234
     security_groups: 
       - sg-07ec9894488ad7ffc
