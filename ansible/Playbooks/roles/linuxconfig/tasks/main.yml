@@ -86,7 +86,3 @@
   changed_when: "'inflating' in unzip_result.stdout"
   failed_when: unzip_result.rc > 1
   become: true
-
-
-
-
